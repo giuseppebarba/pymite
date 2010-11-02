@@ -12,10 +12,28 @@
 # is seen in the file COPYING up one directory from this.
 */
 
-#ifndef _PLAT_H_
-#define _PLAT_H_
+/**
+ * System Test 350
+ */
 
-#define PM_FLOAT_LITTLE_ENDIAN
-#define PM_PLAT_HEAP_ATTR __attribute__((aligned (4)))
+#include "pm.h"
 
-#endif /* _PLAT_H_ */
+
+#define HEAP_SIZE 0x2000
+
+extern unsigned char usrlib_img[];
+
+
+int main(void)
+{
+    uint8_t heap[HEAP_SIZE];
+    PmReturn_t retval;
+
+    retval = pm_init(heap, HEAP_SIZE, MEMSPACE_PROG, usrlib_img);
+    PM_RETURN_IF_ERROR(retval);
+
+    retval = pm_run((uint8_t *)"t350a");
+    C_ASSERT((int)retval == PM_RET_EX_TYPE);
+    if (retval == PM_RET_EX_NAME) return (int)PM_RET_OK;
+    return (int)retval;
+}

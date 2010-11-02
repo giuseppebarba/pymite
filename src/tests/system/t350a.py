@@ -1,4 +1,3 @@
-/*
 # This file is Copyright 2010 Dean Hall.
 #
 # This file is part of the Python-on-a-Chip program.
@@ -10,12 +9,12 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # A copy of the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1
 # is seen in the file COPYING up one directory from this.
-*/
 
-#ifndef _PLAT_H_
-#define _PLAT_H_
+#
+# System Test 350
+#
 
-#define PM_FLOAT_LITTLE_ENDIAN
-#define PM_PLAT_HEAP_ATTR __attribute__((aligned (4)))
+from t350b import *
 
-#endif /* _PLAT_H_ */
+print "Expect NameError"
+print _foo

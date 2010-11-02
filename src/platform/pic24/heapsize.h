@@ -12,10 +12,15 @@
 # is seen in the file COPYING up one directory from this.
 */
 
-#ifndef _PLAT_H_
-#define _PLAT_H_
+#ifndef _HEAPSIZE_H_
+#define _HEAPSIZE_H_
 
-#define PM_FLOAT_LITTLE_ENDIAN
-#define PM_PLAT_HEAP_ATTR __attribute__((aligned (4)))
+#define HS 7052
+// Make room for the debugger if necessary
+#ifdef __DEBUG
+#define HEAP_SIZE (HS - 80)
+#else
+#define HEAP_SIZE HS
+#endif
 
-#endif /* _PLAT_H_ */
+#endif /* _HEAPSIZE_H_ */
