@@ -1,0 +1,39 @@
+==========================
+The STM32F4 discovery Platform Project
+==========================
+
+
+:Author:    James Snyder
+
+:STM32F4discovery port:  H.I.
+
+Purpose
+-------
+
+This is a sample project that demonstrates running interactive PyMite (ipm)
+on the `STM32F4-discovery`_, which is an STM32F4 processor on a stamp-type
+board.  The STM32F407 has an ARM Cortex M4f core.
+
+.. _`STM32F4-discovery: Discovery kit for STM32 F4 series`: http://www.st.com/stm32f4-discovery
+
+
+Requirements
+------------
+
+ARM EABI GCC toolchains
+
+Building the Project
+--------------------
+
+:Note: This platform does not have Makefile build support.
+
+Now use scons to build the project::
+
+    $ cd pymite-09
+    $ scons PLATFORM=stm32f4
+
+Now load the following file into your target's flash:
+``src/platform/stm32f4/main.bin``
+
+.. :mode=rest:
+

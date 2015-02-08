@@ -22,8 +22,13 @@ pathsearch = $(firstword $(wildcard $(addsuffix /$(1),$(subst :, ,$(PATH)))))
 VPATH := . src/vm src/lib docs/src
 
 # Default target
-PLATFORM = desktop64
+LBITS := $(shell getconf LONG_BIT)
 
+ifeq ($(LBITS),64)
+   PLATFORM = desktop64
+else
+   PLATFORM = desktop
+endif
 
 .PHONY: all vm ipm html dox indent TAGS dist check clean
 
@@ -31,6 +36,7 @@ all :
 	$(MAKE) -C src/platform/$(PLATFORM)
 
 ipm :
+	$(MAKE) -C src/platform/$(PLATFORM) cleanvmpath
 	$(MAKE) -C src/platform/$(PLATFORM)
 	cd src/tools && ./ipm.py -f ../platform/$(PLATFORM)/pmfeatures.py -d
 

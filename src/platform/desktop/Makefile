@@ -20,6 +20,7 @@ else
     CDEBUGS += -Os
 endif
 CFLAGS = -Wall -fno-strict-aliasing -Wstrict-prototypes \
+		 -Wno-unused-but-set-variable \
          -Wdeclaration-after-statement -Werror $(CDEBUGS) $(CINCS)
 
 export CFLAGS IPM PM_LIB_FN
@@ -33,7 +34,7 @@ $(PM_LIB_PATH) : ../../vm/*.c ../../vm/*.h
 	make -C ../../vm
 
 $(TARGET).out : $(OBJS) $(PM_LIB_PATH)
-	$(CC) -lm -o $@ $(OBJS) $(PM_LIB_PATH)
+	$(CC) -o $@ $(OBJS) $(PM_LIB_PATH) -lm 
 
 pmfeatures.h : pmfeatures.py $(PMGENPMFEATURES)
 	$(PMGENPMFEATURES) pmfeatures.py > $@
@@ -41,6 +42,11 @@ pmfeatures.h : pmfeatures.py $(PMGENPMFEATURES)
 # Generate native code and module images from the python source
 $(TARGET)_nat.c $(TARGET)_img.c: $(PM_USR_SOURCES) pmfeatures.py
 	$(PMIMGCREATOR) -f pmfeatures.py -c -u -o $(TARGET)_img.c --native-file=$(TARGET)_nat.c $(PM_USR_SOURCES)
+
+cleanvmpath :
+	$(RM) ../../vm/*.a
+	$(RM) ../../vm/*.o
+	$(RM) ../../vm/*.d
 
 clean :
 	$(MAKE) -C ../../vm clean

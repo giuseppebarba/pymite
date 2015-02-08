@@ -184,9 +184,9 @@ sli_ltoa10(int32_t value, uint8_t *buf, uint8_t buflen)
     }
 
     /* Special case (can't convert it to positive value) */
-    if (number == -2147483648)
+    if (number == -2147483647)
     {
-        sli_memcpy(buf, (unsigned char *)"-2147483648", 11);
+        sli_memcpy(buf, (unsigned char *)"-2147483647", 11);
         return PM_RET_OK;
     }
 

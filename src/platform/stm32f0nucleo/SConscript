@@ -20,7 +20,7 @@ CFLAGS = " -DUART_BAUD=$PM_UART_BAUD -Dgcc" \
          " -mcpu=$MCU -mthumb -Os -fomit-frame-pointer -mlittle-endian" \
          " -ffunction-sections -fdata-sections -fno-strict-aliasing"
          
-LDFLAGS = "-mcpu=$MCU -mthumb -Wl,-T -Xlinker src/platform/stm32/STM32F091RC_FLASH.ld" \
+LDFLAGS = "-mcpu=$MCU -mthumb -Wl,-T -Xlinker src/platform/stm32f0nucleo/STM32F091RC_FLASH.ld" \
           " -u _start -Wl,-e,Reset_Handler -Wl,-static -Wl,--gc-sections" \
           " -nostartfiles -Wl,--allow-multiple-definition"
           
@@ -37,7 +37,7 @@ PY_SOURCES = ["main.py"]
 PM_LIB_ROOT = ["pmvm_%s" % vars.args["PLATFORM"]]
 
 env = Environment(variables = vars,
-                  CPPPATH = ["#src/vm", "#src/platform/stm32", "#src/platform/stm32/ST/inc"],
+                  CPPPATH = ["#src/vm", "#src/platform/stm32f0nucleo", "#src/platform/stm32f0nucleo/ST/inc"],
                   CC = "%s-gcc" % TCHAIN,
                   AS =  "%s-gcc" % TCHAIN,
                   ASFLAGS = AFLAGS,
@@ -55,9 +55,9 @@ pmfeatures = env.Command(["pmfeatures.h"], ["pmfeatures.py"],
     "src/tools/pmGenPmFeatures.py $SOURCE > $TARGET")
 
 img_sources = env.Command(["main_img.c", "main_nat.c"], [PY_SOURCES],
-    "src/tools/pmImgCreator.py -f src/platform/stm32/pmfeatures.py -c -u " \
-    "-o src/platform/stm32/main_img.c " \
-    "--native-file=src/platform/stm32/main_nat.c $SOURCES")
+    "src/tools/pmImgCreator.py -f src/platform/stm32f0nucleo/pmfeatures.py -c -u " \
+    "-o src/platform/stm32f0nucleo/main_img.c " \
+    "--native-file=src/platform/stm32f0nucleo/main_nat.c $SOURCES")
 
 elf = env.Program("main.elf", SOURCES + img_sources + vmlib,
                   LIBS = [PM_LIB_ROOT,"c","gcc","m"], LIBPATH = ["../../vm"])

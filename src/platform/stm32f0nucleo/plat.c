@@ -25,10 +25,10 @@ RCC_Configuration(void)
 {
     SystemInit();
 
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOx | RCC_APB2Periph_AFIO, ENABLE);
+ //   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOx | RCC_APB2Periph_AFIO, ENABLE);
 
     /* Enable USART1 clock */
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+ //   RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 }
 
 
@@ -134,6 +134,7 @@ plat_init(void)
     debug();
 #endif
 
+    
     RCC_Configuration();
     NVIC_Configuration();
     GPIO_Configuration();

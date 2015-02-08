@@ -1,0 +1,78 @@
+import os
+import glob
+
+#TCHAIN = "arm-eabi"
+#TCHAIN = "arm-elf"
+TCHAIN = "arm-none-eabi"
+
+PLATFORM_NAME="stm32f4"
+
+Import("vars")
+
+vars.Add("PM_UART_BAUD", "Baud rate of the ipm serial connection.", "57600")
+vars.Add("PM_UART_ALT_BAUD", "ALT Baud rate of the ipm serial connection.", "57600")
+vars.Add("IPM", "Add the interactive library to the standard lib", True)
+vars.Add("MCU", "Type of ARM device; the arg to -mcpu.", "cortex-m4")
+vars.Add("NM", "", "arm-eabi-nm")
+vars.Add("OBJCOPY", "", "%s-objcopy" % TCHAIN)
+vars.Add("OBJDUMP", "", "%s-objdump" % TCHAIN)
+vars.Add("SIZE", "", "%s-size" % TCHAIN)
+
+__platform_dir__="src/platform/"+PLATFORM_NAME;
+
+CFLAGS = " -Dgcc" \
+         " -DUART_BAUD=$PM_UART_BAUD  -DUART_ALT_BAUD=$PM_UART_ALT_BAUD" \
+         " -DSTM32F4XX" \
+         " -Wall -Wimplicit" \
+         " -mcpu=$MCU -mthumb -O0 -g -fomit-frame-pointer -mlittle-endian" \
+         " -ffreestanding -msoft-float -MD -march=armv7 -mfix-cortex-m3-ldrd"
+#         " -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -fipa-sra" \
+#         " -ffunction-sections -fdata-sections -fno-strict-aliasing"\
+#         " -DUSE_STDPERIPH_DRIVER " 
+
+LDFLAGS = " -mcpu=$MCU -mthumb -Wl,-T -Xlinker "+__platform_dir__+"/stm32f4xx.ld" \
+          " -u _start-Wl,-e,Reset_Handler -Wl,-static -Wl,--gc-sections" \
+          " -nostartfiles -Wl,--allow-multiple-definition" \
+          " -Wl,-Map,"+__platform_dir__+"/main.map"
+
+AFLAGS = "-x assembler-with-cpp $_CPPINCFLAGS -mcpu=$MCU -mthumb -Wall -c"
+
+if "DEBUG" in vars.args.keys():
+    CFLAGS = "-g -gstabs -D__DEBUG__=1 " + CFLAGS
+
+SOURCES = ["main.c", "plat.c", "init.c", "usart2.c", "syscalls.c", "vector.c"]
+SOURCES += glob.glob("FWlib/src/*.c")
+# SOURCES += glob.glob("FWlib/src/*.s")
+
+PY_SOURCES = ["main.py", "stm32f4discovery.py", "gpio.py", "pin.py", "lcd.py", "wire.py"]
+PM_LIB_ROOT = ["pmvm_%s" % vars.args["PLATFORM"]]
+
+env = Environment(variables = vars,
+                  CPPPATH = ["#src/vm", "#"+__platform_dir__, "#"+__platform_dir__+"/FWlib/inc"],
+                  CC = "%s-gcc" % TCHAIN,
+                  AS =  "%s-gcc" % TCHAIN,
+                  ASFLAGS = AFLAGS,
+                  CCFLAGS = CFLAGS,
+                  CXX = "%s-g++" % TCHAIN,
+                  AR = "%s-ar" % TCHAIN,
+                  ARFLAGS = "rcs",
+                  RANLIB = "%s-ranlib" % TCHAIN,
+                  LINKFLAGS = LDFLAGS,
+                  ENV = os.environ)
+                
+vmlib = SConscript(["../../vm/SConscript"], ["env", "vars"])
+
+pmfeatures = env.Command(["pmfeatures.h"], ["pmfeatures.py"], 
+    "src/tools/pmGenPmFeatures.py $SOURCE > $TARGET")
+
+img_sources = env.Command(["main_img.c", "main_nat.c"], [PY_SOURCES],
+    "src/tools/pmImgCreator.py -f "+__platform_dir__+"/pmfeatures.py -c -u " \
+    "-o src/platform/"+PLATFORM_NAME+"/main_img.c " \
+    "--native-file="+__platform_dir__+"/main_nat.c $SOURCES")
+
+elf = env.Program("main.elf", pmfeatures + SOURCES + img_sources + vmlib,
+                  LIBS = [PM_LIB_ROOT,"c","gcc","m"], LIBPATH = ["../../vm"])
+
+bin = env.Command("main.bin", "main.elf", "$OBJCOPY -O binary $SOURCE $TARGET")
+
+lst = env.Command("main.lst", "main.elf", "$OBJDUMP -h -S -C $SOURCE > "+__platform_dir__+"/main.lst")
