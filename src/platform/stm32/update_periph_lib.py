@@ -7,8 +7,9 @@ extra_headers = ['stm32f10x.h','core_cm3.h','cortexm3_macro.h','system_stm32f10x
 extra_sources = ['core_cm3.c','cortexm3_macro.s','system_stm32f10x.c']
 startup_files = ['startup_stm32f10x_hd.s']
 
-#stm32liburl = 'http://www.st.com/stonline/products/support/micro/files/stm32f10x_stdperiph_lib.zip'
-stm32liburl = "http://www.st.com/internet/com/SOFTWARE_RESOURCES/SW_COMPONENT/FIRMWARE/stm32f10x_stdperiph_lib.zip"
+stm32liburl = 'http://www.st.com/st-web-ui/static/active/en/st_prod_software_internet/resource/technical/software/firmware/stsw-stm32054.zip'
+#stm32liburl = "http://www.st.com/internet/com/SOFTWARE_RESOURCES/SW_COMPONENT/FIRMWARE/stm32f10x_stdperiph_lib.zip"
+
 
 webFile = urllib.urlopen(stm32liburl)
 print 'Downloading Peripheral Library...'
