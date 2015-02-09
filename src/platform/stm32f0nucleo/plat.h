@@ -35,6 +35,16 @@
 
 #define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
 
+/**
+* @brief BlueNRG Role.
+*/
+typedef enum {
+	CLIENT = 0,
+	      /**< CLIENT is for Central role. */
+	SERVER = 1
+	      /**< SERVER is for Peripheral role. */
+} BLE_RoleTypeDef;
+
 PmReturn_t plat_init(void);
 
 #endif /* _PLAT_H_ */

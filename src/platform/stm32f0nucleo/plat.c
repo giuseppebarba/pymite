@@ -15,9 +15,16 @@
 #include "stm32f0xx_hal_conf.h"
 #include "pm.h"
 #include "plat.h"
+#include "stm32_bluenrg_ble.h"
 
 UART_HandleTypeDef UartHandle;
 __IO ITStatus UartReady = RESET;
+
+/* Uncomment the line corresponding to the role you want to have */
+BLE_RoleTypeDef BLE_Role = SERVER;
+//BLE_RoleTypeDef BLE_Role = CLIENT;
+
+#define BDADDR_SIZE 6
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -84,6 +91,10 @@ static void SystemClock_Config(void)
 
 PmReturn_t plat_init(void)
 {
+	uint8_t CLIENT_BDADDR[] = { 0xbb, 0x00, 0x00, 0xE1, 0x80, 0x02 };
+	uint8_t SERVER_BDADDR[] = { 0xaa, 0x00, 0x00, 0xE1, 0x80, 0x02 };
+	uint8_t bdaddr[BDADDR_SIZE];
+
 	/* STM32F0xx HAL library initialization:
 	   - Configure the Flash prefetch
 	   - Systick timer is configured by default as source of time base, but user
@@ -100,6 +111,62 @@ PmReturn_t plat_init(void)
 
 	/* Configure the system clock to 48 MHz */
 	SystemClock_Config();
+
+	/* Initialize the BlueNRG SPI driver */
+	BNRG_SPI_Init();
+
+	/* Initialize the BlueNRG HCI */
+	HCI_Init();
+
+	/* Reset BlueNRG hardware */
+	BlueNRG_RST();
+
+	if (BLE_Role == CLIENT)
+		Osal_MemCpy(bdaddr, CLIENT_BDADDR, sizeof(CLIENT_BDADDR));
+	else
+		Osal_MemCpy(bdaddr, SERVER_BDADDR, sizeof(SERVER_BDADDR));
+
+	ret = aci_hal_write_config_data(CONFIG_DATA_PUBADDR_OFFSET,
+					CONFIG_DATA_PUBADDR_LEN, bdaddr);
+	if (ret)
+		Error_Handler();
+
+	ret = aci_gatt_init();
+	if (ret)
+		Error_Handler();
+
+	if (BLE_Role == SERVER)
+		ret =
+		    aci_gap_init(GAP_PERIPHERAL_ROLE, &service_handle,
+				 &dev_name_char_handle,
+				 &appearance_char_handle);
+	else
+		ret =
+		    aci_gap_init(GAP_CENTRAL_ROLE, &service_handle,
+				 &dev_name_char_handle,
+				 &appearance_char_handle);
+
+	if (ret != BLE_STATUS_SUCCESS)
+		Error_Handler();
+
+	ret = aci_gap_set_auth_requirement(MITM_PROTECTION_REQUIRED,
+					   OOB_AUTH_DATA_ABSENT,
+					   NULL,
+					   7,
+					   16,
+					   USE_FIXED_PIN_FOR_PAIRING,
+					   123456, BONDING);
+	if (ret != BLE_STATUS_SUCCESS)
+		Error_Handler();
+
+	if (BLE_Role == SERVER) {
+		ret = Add_Sample_Service();
+		if (ret != BLE_STATUS_SUCCESS)
+			Error_Handler();
+	}
+
+	/* Set output power level */
+	ret = aci_hal_set_tx_power_level(1, 4);
 
 	/*##-1- Configure the UART peripheral ###################################### */
 	/* Put the USART peripheral in the Asynchronous mode (UART Mode) */
@@ -268,8 +335,9 @@ void plat_reportError(PmReturn_t result)
 
 			/* The last name in the names tuple of the code obj is the name */
 			retval =
-			    tuple_getItem((pPmObj_t) gVmGlobal.nativeframe.
-					  nf_func->f_co->co_names, -1, &pstr);
+			    tuple_getItem((pPmObj_t) gVmGlobal.
+					  nativeframe.nf_func->f_co->co_names,
+					  -1, &pstr);
 			if ((retval) != PM_RET_OK) {
 				printf("  Unable to get native func name.\n");
 				return;
@@ -288,9 +356,8 @@ void plat_reportError(PmReturn_t result)
 		     pframe = (pPmObj_t) ((pPmFrame_t) pframe)->fo_back) {
 			/* The last name in the names tuple of the code obj is the name */
 			retval = tuple_getItem((pPmObj_t)
-					       ((pPmFrame_t) pframe)->
-					       fo_func->f_co->co_names, -1,
-					       &pstr);
+					       ((pPmFrame_t) pframe)->fo_func->
+					       f_co->co_names, -1, &pstr);
 			if ((retval) != PM_RET_OK)
 				break;
 

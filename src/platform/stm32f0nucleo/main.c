@@ -32,5 +32,7 @@ int main(void)
 	/* Run the sample program */
 	retval = pm_run((uint8_t *) "main");
 
+	//HCI_Process();
+
 	return (int)retval;
 }
