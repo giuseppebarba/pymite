@@ -13,6 +13,7 @@
 */
 
 #include "pm.h"
+#include "plat.h"
 
 #define HEAP_SIZE 0x7000
 
@@ -23,6 +24,8 @@ main(void)
 {
     uint8_t heap[HEAP_SIZE];
     PmReturn_t retval;
+
+    plat_init();
 
     retval = pm_init(heap, HEAP_SIZE, MEMSPACE_PROG, usrlib_img);
     PM_RETURN_IF_ERROR(retval);

@@ -126,55 +126,55 @@ plat_reportError(PmReturn_t result)
 	switch(result){
 	  case(PM_RET_EX):
 		printf("PM_RET_EX: General exception\n");
-		break;;
+		break;
 	  case(PM_RET_EX_EXIT):
 		printf("PM_RET_EX_EXIT: System exit\n");
-		break;;
+		break;
 	  case(PM_RET_EX_IO):
 		printf("PM_RET_EX_IO: Input/output error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_ZDIV):
 		printf("PM_RET_EX_ZDIV: Zero division error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_ASSRT):
 		printf("PM_RET_EX_ASSRT: Assertion error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_ATTR):
 		printf("PM_RET_EX_ATTR: Attribute error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_IMPRT):
 		printf("PM_RET_EX_IMPRT: Import error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_INDX):
 		printf("PM_RET_EX_INDX: Index error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_KEY):
 		printf("PM_RET_EX_KEY: Key error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_MEM):
 		printf("PM_RET_EX_MEM: Memory error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_NAME):
 		printf("PM_RET_EX_NAME: Name error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_SYNTAX):
 		printf("PM_RET_EX_SYNTAX: Syntax error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_SYS):
 		printf("PM_RET_EX_SYS: System error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_TYPE):
 		printf("PM_RET_EX_TYPE: Type error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_VAL):
 		printf("PM_RET_EX_VAL: Value error\n");
-		break;;
+		break;
 	  case(PM_RET_EX_STOP):
 		printf("PM_RET_EX_STOP: Stop iteration\n");
-		break;;
+		break;
 	  case(PM_RET_EX_WARN):
 		printf("PM_RET_EX_WARN: Warning\n");
-		break;;
+		break;
 	  default:
 		printf("???: unknown result value.\n");
 		break;;

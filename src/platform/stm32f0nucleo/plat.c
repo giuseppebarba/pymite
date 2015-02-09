@@ -12,156 +12,125 @@
 
 #include <stdio.h>
 #include "stm32f0xx.h"
-#include "platform_config.h"
+#include "stm32f0xx_hal_conf.h"
 #include "pm.h"
+#include "plat.h"
 
-void RCC_Configuration(void);
-void GPIO_Configuration(void);
-void NVIC_Configuration(void);
-void RTC_Configuration(void);
-
-void
-RCC_Configuration(void)
-{
-    SystemInit();
-
- //   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOx | RCC_APB2Periph_AFIO, ENABLE);
-
-    /* Enable USART1 clock */
- //   RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
-}
-
-
-void
-GPIO_Configuration(void)
-{
-    GPIO_InitTypeDef GPIO_InitStructure;
-
-    /* Configure USARTx_Tx as alternate function push-pull */
-    GPIO_InitStructure.GPIO_Pin = GPIO_TxPin;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_Init(GPIOx, &GPIO_InitStructure);
-
-    /* Configure USARTx_Rx as input floating */
-    GPIO_InitStructure.GPIO_Pin = GPIO_RxPin;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_Init(GPIOx, &GPIO_InitStructure);
-}
-
-
-void
-NVIC_Configuration(void)
-{
-    NVIC_InitTypeDef NVIC_InitStructure;
-
-    /* Configure one bit for preemption priority */
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-
-    /* Enable the RTC Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-}
-
+UART_HandleTypeDef UartHandle;
+__IO ITStatus UartReady = RESET;
 
 /**
-  * @brief  Configures the RTC.
+  * @brief  This function is executed in case of error occurrence.
+  * @param  None
   * @retval None
   */
-void
-RTC_Configuration(void)
+static void Error_Handler(void)
 {
-    /* Enable PWR and BKP clocks */
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
-
-    /* Allow access to BKP Domain */
-    PWR_BackupAccessCmd(ENABLE);
-
-    /* Reset Backup Domain */
-    BKP_DeInit();
-
-    /* Enable LSE */
-    RCC_LSEConfig(RCC_LSE_ON);
-    /* Wait till LSE is ready */
-    while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
-    {}
-
-    /* Select LSE as RTC Clock Source */
-    RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
-
-    /* Enable RTC Clock */
-    RCC_RTCCLKCmd(ENABLE);
-
-    /* Wait for RTC registers synchronization */
-    RTC_WaitForSynchro();
-
-    /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();
-
-    /* Enable the RTC Second */
-    RTC_ITConfig(RTC_IT_SEC, ENABLE);
-
-    /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();
-
-    /* Set RTC prescaler: set RTC period to 1sec */
-    RTC_SetPrescaler(32767); /* RTC period = RTCCLK/RTC_PR = (32.768 KHz)/(32767+1) */
-
-    /* Wait until last write operation on RTC registers has finished */
-    RTC_WaitForLastTask();
+  /* User may add here some code to deal with this error */
+  while(1)
+  {
+  }
 }
-
 
 /*
  * Retargets the C library printf function to the USART.
  */
 int fputc(int ch, FILE *f)
 {
-    plat_putByte((uint8_t) ch);
-    return ch;
+	if(HAL_UART_Transmit_IT(&UartHandle, (uint8_t*)ch, 1)!= HAL_OK)
+		Error_Handler();
+
+	return ch;
 }
 
-
-PmReturn_t
-plat_init(void)
+/**
+  * @brief  System Clock Configuration
+  *         The system Clock is configured as follow :
+  *            System Clock source            = PLL (HSI48)
+  *            SYSCLK(Hz)                     = 48000000
+  *            HCLK(Hz)                       = 48000000
+  *            AHB Prescaler                  = 1
+  *            APB1 Prescaler                 = 1
+  *            HSI Frequency(Hz)              = 48000000
+  *            PREDIV                         = 2
+  *            PLLMUL                         = 2
+  *            Flash Latency(WS)              = 1
+  * @param  None
+  * @retval None
+  */
+static void SystemClock_Config(void)
 {
-    USART_InitTypeDef USART_InitStructure;
+	RCC_ClkInitTypeDef RCC_ClkInitStruct;
+	RCC_OscInitTypeDef RCC_OscInitStruct;
 
-#ifdef DEBUG
-    debug();
-#endif
+	/* Select HSI48 Oscillator as PLL source */
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48;
+	RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI48;
+	RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV2;
+	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
+	if (HAL_RCC_OscConfig(&RCC_OscInitStruct)!= HAL_OK)
+		Error_Handler();
 
-    
-    RCC_Configuration();
-    NVIC_Configuration();
-    GPIO_Configuration();
-    RTC_Configuration();
+	/* Select PLL as system clock source and configure the HCLK and PCLK1 clocks dividers */
+	RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1);
+	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1)!= HAL_OK)
+		Error_Handler();
+}
 
-    USART_InitStructure.USART_BaudRate = UART_BAUD;
-    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    USART_InitStructure.USART_StopBits = USART_StopBits_1;
-    USART_InitStructure.USART_Parity = USART_Parity_No ;
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+PmReturn_t plat_init(void)
+{
+	/* STM32F0xx HAL library initialization:
+		- Configure the Flash prefetch
+		- Systick timer is configured by default as source of time base, but user
+		  can eventually implement his proper time base source (a general purpose
+		  timer for example or other time source), keeping in mind that Time base
+		  duration should be kept 1ms since PPP_TIMEOUT_VALUEs are defined and
+		  handled in milliseconds basis.
+		- Low Level Initialization
+	*/
+	HAL_Init();
 
-    /* Configure the USARTx */
-    USART_Init(USARTx, &USART_InitStructure);
+	/* Configure LED2 */
+	BSP_LED_Init(LED2);
 
-    /* Enable the USARTx */
-    USART_Cmd(USARTx, ENABLE);
+	/* Configure the system clock to 48 MHz */
+	SystemClock_Config();
+
+	/*##-1- Configure the UART peripheral ######################################*/
+	/* Put the USART peripheral in the Asynchronous mode (UART Mode) */
+	/* UART configured as follows:
+	  - Word Length = 8 Bits
+	  - Stop Bit = One Stop bit
+	  - Parity = None
+	  - BaudRate = 9600 baud
+	  - Hardware flow control disabled (RTS and CTS signals) */
+	UartHandle.Instance        = USARTx;
+	UartHandle.Init.BaudRate   = 9600;
+	UartHandle.Init.WordLength = UART_WORDLENGTH_8B;
+	UartHandle.Init.StopBits   = UART_STOPBITS_1;
+	UartHandle.Init.Parity     = UART_PARITY_NONE;
+	UartHandle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
+	UartHandle.Init.Mode       = UART_MODE_TX_RX;
+	UartHandle.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+	if(HAL_UART_DeInit(&UartHandle) != HAL_OK)
+		Error_Handler();
+
+	if(HAL_UART_Init(&UartHandle) != HAL_OK)
+		Error_Handler();
 
     return PM_RET_OK;
 }
 
 
 /* TODO: disable the peripherals and interrupts */
-PmReturn_t
-plat_deinit(void)
+PmReturn_t plat_deinit(void)
 {
-    return PM_RET_OK;
+	return PM_RET_OK;
 }
 
 
@@ -169,8 +138,7 @@ plat_deinit(void)
  * Gets a byte from the address in the designated memory space
  * Post-increments *paddr.
  */
-uint8_t
-plat_memGetByte(PmMemSpace_t memspace, uint8_t const **paddr)
+uint8_t plat_memGetByte(PmMemSpace_t memspace, uint8_t const **paddr)
 {
     uint8_t b = 0;
 
@@ -193,38 +161,29 @@ plat_memGetByte(PmMemSpace_t memspace, uint8_t const **paddr)
 }
 
 
-PmReturn_t
-plat_getByte(uint8_t *b)
+PmReturn_t plat_getByte(uint8_t *b)
 {
     int c;
     PmReturn_t retval = PM_RET_OK;
 
-    while(USART_GetFlagStatus(USARTx, USART_FLAG_RXNE) == RESET)
-    {
-    }
+	if(HAL_UART_Receive_IT(&UartHandle, (uint8_t *)&c, 1) != HAL_OK)
+		Error_Handler();
 
-    c = (int) USART_ReceiveData(USARTx);
-    *b = c & 0xFF;
+	*b = c & 0xFF;
+	if (c > 0xFF)
+		PM_RAISE(retval, PM_RET_EX_IO);
 
-    if (c > 0xFF)
-    {
-        PM_RAISE(retval, PM_RET_EX_IO);
-    }
-
-    return retval;
+	return retval;
 }
 
 
 PmReturn_t
 plat_putByte(uint8_t b)
 {
-    while(USART_GetFlagStatus(USARTx, USART_FLAG_TXE) == RESET)
-    {
-    }
+	if(HAL_UART_Transmit_IT(&UartHandle, (uint8_t*)b, 1)!= HAL_OK)
+		Error_Handler();
 
-    USART_SendData(USARTx, (uint8_t) (b & 0x1FF));
-
-    return PM_RET_OK;
+	return PM_RET_OK;
 }
 
 
@@ -241,6 +200,62 @@ plat_getMsTicks(uint32_t *r_ticks)
 void
 plat_reportError(PmReturn_t result)
 {
+	switch(result){
+	  case(PM_RET_EX):
+		printf("PM_RET_EX: General exception\n");
+		break;;
+	  case(PM_RET_EX_EXIT):
+		printf("PM_RET_EX_EXIT: System exit\n");
+		break;;
+	  case(PM_RET_EX_IO):
+		printf("PM_RET_EX_IO: Input/output error\n");
+		break;;
+	  case(PM_RET_EX_ZDIV):
+		printf("PM_RET_EX_ZDIV: Zero division error\n");
+		break;;
+	  case(PM_RET_EX_ASSRT):
+		printf("PM_RET_EX_ASSRT: Assertion error\n");
+		break;;
+	  case(PM_RET_EX_ATTR):
+		printf("PM_RET_EX_ATTR: Attribute error\n");
+		break;;
+	  case(PM_RET_EX_IMPRT):
+		printf("PM_RET_EX_IMPRT: Import error\n");
+		break;;
+	  case(PM_RET_EX_INDX):
+		printf("PM_RET_EX_INDX: Index error\n");
+		break;;
+	  case(PM_RET_EX_KEY):
+		printf("PM_RET_EX_KEY: Key error\n");
+		break;;
+	  case(PM_RET_EX_MEM):
+		printf("PM_RET_EX_MEM: Memory error\n");
+		break;;
+	  case(PM_RET_EX_NAME):
+		printf("PM_RET_EX_NAME: Name error\n");
+		break;;
+	  case(PM_RET_EX_SYNTAX):
+		printf("PM_RET_EX_SYNTAX: Syntax error\n");
+		break;;
+	  case(PM_RET_EX_SYS):
+		printf("PM_RET_EX_SYS: System error\n");
+		break;;
+	  case(PM_RET_EX_TYPE):
+		printf("PM_RET_EX_TYPE: Type error\n");
+		break;;
+	  case(PM_RET_EX_VAL):
+		printf("PM_RET_EX_VAL: Value error\n");
+		break;;
+	  case(PM_RET_EX_STOP):
+		printf("PM_RET_EX_STOP: Stop iteration\n");
+		break;;
+	  case(PM_RET_EX_WARN):
+		printf("PM_RET_EX_WARN: Warning\n");
+		break;;
+	  default:
+		printf("???: unknown result value.\n");
+		break;;
+	};
      /* Print error */
     printf("Error:     0x%02X\n", result);
     printf("  Release: 0x%02X\n", gVmGlobal.errVmRelease);

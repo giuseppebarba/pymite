@@ -1,21 +1,40 @@
-/*
-# This file is Copyright 2010 Dean Hall.
-#
-# This file is part of the Python-on-a-Chip program.
-# Python-on-a-Chip is free software: you can redistribute it and/or modify
-# it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1.
-#
-# Python-on-a-Chip is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# A copy of the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1
-# is seen in the file COPYING up one directory from this.
-*/
-
 #ifndef _PLAT_H_
 #define _PLAT_H_
 
+#include "stm32f0xx_hal.h"
+#include "stm32f0xx_nucleo.h"
+#include "pm.h"
+
 #define PM_FLOAT_LITTLE_ENDIAN
 #define PM_PLAT_POINTER_SIZE 4
+
+/* Definition for USARTx clock resources */
+#define USARTx                           USART1
+#define USARTx_CLK_ENABLE()              __USART1_CLK_ENABLE()
+#define USARTx_RX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
+#define USARTx_TX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
+#define USARTx_FORCE_RESET()             __USART1_FORCE_RESET()
+#define USARTx_RELEASE_RESET()           __USART1_RELEASE_RESET()
+
+/* Definition for USARTx Pins */
+#define USARTx_TX_PIN                    GPIO_PIN_9
+#define USARTx_TX_GPIO_PORT              GPIOA
+#define USARTx_TX_AF                     GPIO_AF1_USART1
+#define USARTx_RX_PIN                    GPIO_PIN_10
+#define USARTx_RX_GPIO_PORT              GPIOA
+#define USARTx_RX_AF                     GPIO_AF1_USART1
+
+/* Definition for USARTx's NVIC */
+#define USARTx_IRQn                      USART1_IRQn
+#define USARTx_IRQHandler                USART1_IRQHandler
+
+/* Size of Trasmission buffer */
+#define TXBUFFERSIZE                      (COUNTOF(aTxBuffer) - 1)
+/* Size of Reception buffer */
+#define RXBUFFERSIZE                      TXBUFFERSIZE
+
+#define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
+
+PmReturn_t plat_init(void);
 
 #endif /* _PLAT_H_ */

@@ -29,9 +29,9 @@ AFLAGS = "-x assembler-with-cpp $_CPPINCFLAGS -mcpu=$MCU -mthumb -Wall -c"
 if "DEBUG" in vars.args.keys():
     CFLAGS = "-g -gstabs -D__DEBUG__=1 " + CFLAGS
 
-SOURCES = ["main.c", "plat.c", "stm32f10x_it.c", "syscalls.c"]
-SOURCES += glob.glob("FWlib/src/*.c")
-SOURCES += glob.glob("FWlib/src/*.s")
+SOURCES = ["main.c", "plat.c", "stm32f0xx_it.c", "syscalls.c", "stm32f0xx_nucleo.c"]
+SOURCES += glob.glob("ST/src/*.c")
+SOURCES += glob.glob("ST/src/*.s")
 
 PY_SOURCES = ["main.py"]
 PM_LIB_ROOT = ["pmvm_%s" % vars.args["PLATFORM"]]
