@@ -40,7 +40,7 @@
 #define __STM32F0xx_HAL_CRC_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -52,9 +52,9 @@
 
 /** @addtogroup CRCEx CRCEx Extended HAL Module Driver 
   * @{
-  */ 
+  */
 
-/* Exported types ------------------------------------------------------------*/ 
+/* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup CRCEx_Exported_Constants CRCEx Exported Constants
   * @{
@@ -98,11 +98,11 @@
 #define IS_CRC_POL_LENGTH(LENGTH)     (((LENGTH) == CRC_POLYLENGTH_32B) || \
                                        ((LENGTH) == CRC_POLYLENGTH_16B) || \
                                        ((LENGTH) == CRC_POLYLENGTH_8B)  || \
-                                       ((LENGTH) == CRC_POLYLENGTH_7B))  
+                                       ((LENGTH) == CRC_POLYLENGTH_7B))
 #else
 #define CRC_POLYLENGTH_32B                  ((uint32_t)0x00000000)
-#define IS_CRC_POL_LENGTH(LENGTH)     ((LENGTH) == CRC_POLYLENGTH_32B)  
-#endif /* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) */
+#define IS_CRC_POL_LENGTH(LENGTH)     ((LENGTH) == CRC_POLYLENGTH_32B)
+#endif				/* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) */
 /**
   * @}
   */
@@ -117,33 +117,33 @@
 #define HAL_CRC_LENGTH_7B       7
 #else
 #define HAL_CRC_LENGTH_32B     32
-#endif /* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) */   
+#endif				/* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) */
 /**
   * @}
-  */  
+  */
 
 /**
   * @}
-  */  
+  */
 /* Exported macro ------------------------------------------------------------*/
 
 /** @defgroup CRCEx_Exported_Macros CRCEx Exported Macros
   * @{
   */
-    
+
 /**
   * @brief  Set CRC output reversal
   * @param  __HANDLE__    : CRC handle
   * @retval None.
   */
-#define  __HAL_CRC_OUTPUTREVERSAL_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->CR |= CRC_CR_REV_OUT)   
+#define  __HAL_CRC_OUTPUTREVERSAL_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->CR |= CRC_CR_REV_OUT)
 
 /**
   * @brief  Unset CRC output reversal
   * @param  __HANDLE__    : CRC handle
   * @retval None.
   */
-#define __HAL_CRC_OUTPUTREVERSAL_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->CR &= ~(CRC_CR_REV_OUT))   
+#define __HAL_CRC_OUTPUTREVERSAL_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->CR &= ~(CRC_CR_REV_OUT))
 
 #if defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) || defined(STM32F070xB) || defined(STM32F030xC)
 /**
@@ -153,7 +153,7 @@
   * @retval None.
   */
 #define __HAL_CRC_POLYNOMIAL_CONFIG(__HANDLE__, __POLYNOMIAL__) ((__HANDLE__)->Instance->POL = (__POLYNOMIAL__))
-#endif /* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) || defined(STM32F070xB) || defined(STM32F030xC) */ 
+#endif				/* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) || defined(STM32F070xB) || defined(STM32F030xC) */
 /**
   * @}
   */
@@ -162,20 +162,27 @@
 /** @addtogroup CRCEx_Exported_Functions
   * @{
   */
-  
+
 /** @addtogroup CRCEx_Exported_Functions_Group1 Extended Initialization/de-initialization functions
   * @brief    Extended Initialization and Configuration functions.
   * @{
   */
-     
+
 /* Initialization and de-initialization functions  ****************************/
-HAL_StatusTypeDef HAL_CRCEx_Init(CRC_HandleTypeDef *hcrc);
-HAL_StatusTypeDef HAL_CRCEx_Input_Data_Reverse(CRC_HandleTypeDef *hcrc, uint32_t InputReverseMode);
-HAL_StatusTypeDef HAL_CRCEx_Output_Data_Reverse(CRC_HandleTypeDef *hcrc, uint32_t OutputReverseMode);
+	HAL_StatusTypeDef HAL_CRCEx_Init(CRC_HandleTypeDef * hcrc);
+	HAL_StatusTypeDef HAL_CRCEx_Input_Data_Reverse(CRC_HandleTypeDef * hcrc,
+						       uint32_t
+						       InputReverseMode);
+	HAL_StatusTypeDef HAL_CRCEx_Output_Data_Reverse(CRC_HandleTypeDef *
+							hcrc,
+							uint32_t
+							OutputReverseMode);
 
 #if defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) || defined(STM32F070xB) || defined(STM32F030xC)
-HAL_StatusTypeDef HAL_CRCEx_Polynomial_Set(CRC_HandleTypeDef *hcrc, uint32_t Pol, uint32_t PolyLength);
-#endif /* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) || defined(STM32F070xB) || defined(STM32F030xC) */ 
+	HAL_StatusTypeDef HAL_CRCEx_Polynomial_Set(CRC_HandleTypeDef * hcrc,
+						   uint32_t Pol,
+						   uint32_t PolyLength);
+#endif				/* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined(STM32F098xx) || defined(STM32F070xB) || defined(STM32F030xC) */
 /**
   * @}
   */
@@ -183,20 +190,18 @@ HAL_StatusTypeDef HAL_CRCEx_Polynomial_Set(CRC_HandleTypeDef *hcrc, uint32_t Pol
 /* Peripheral State and Error functions ***************************************/
 /**
   * @}
-  */ 
-
-/**
-  * @}
-  */ 
+  */
 
 /**
   * @}
   */
-  
+
+/**
+  * @}
+  */
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F0xx_HAL_CRC_EX_H */
-
+#endif				/* __STM32F0xx_HAL_CRC_EX_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

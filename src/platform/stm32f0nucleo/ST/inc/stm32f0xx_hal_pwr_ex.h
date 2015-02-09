@@ -40,7 +40,7 @@
 #define __STM32F0xx_HAL_PWR_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -54,7 +54,7 @@
   * @{
   */
 
-/* Exported types ------------------------------------------------------------*/ 
+/* Exported types ------------------------------------------------------------*/
 
 /** @defgroup PWREx_Exported_Types PWREx Exported Types
  *  @{
@@ -67,18 +67,17 @@
 /**
   * @brief  PWR PVD configuration structure definition
   */
-typedef struct
-{
-  uint32_t PVDLevel;   /*!< PVDLevel: Specifies the PVD detection level
-                            This parameter can be a value of @ref PWREx_PVD_detection_level */
+	typedef struct {
+		uint32_t PVDLevel;	/*!< PVDLevel: Specifies the PVD detection level
+					   This parameter can be a value of @ref PWREx_PVD_detection_level */
 
-  uint32_t Mode;       /*!< Mode: Specifies the operating mode for the selected pins.
-                            This parameter can be a value of @ref PWREx_PVD_Mode */
-}PWR_PVDTypeDef;
+		uint32_t Mode;	/*!< Mode: Specifies the operating mode for the selected pins.
+				   This parameter can be a value of @ref PWREx_PVD_Mode */
+	} PWR_PVDTypeDef;
 
-#endif /* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
-       /* defined (STM32F071xB) || defined (STM32F072xB) || */
-       /* defined (STM32F091xC) */
+#endif				/* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
+	/* defined (STM32F071xB) || defined (STM32F072xB) || */
+	/* defined (STM32F091xC) */
 /**
   * @}
   */
@@ -87,7 +86,6 @@ typedef struct
 /** @defgroup PWREx_Exported_Constants PWREx Exported Constants
   * @{
   */
-
 
 /** @defgroup PWREx_WakeUp_Pins PWREx Wakeup Pins
   * @{
@@ -111,14 +109,14 @@ typedef struct
                                 ((PIN) == PWR_WAKEUP_PIN6) || \
                                 ((PIN) == PWR_WAKEUP_PIN7) || \
                                 ((PIN) == PWR_WAKEUP_PIN8))
-#else 
+#else
 #define PWR_WAKEUP_PIN1                     ((uint32_t)0x00)
 #define PWR_WAKEUP_PIN2                     ((uint32_t)0x01)
 
 #define IS_PWR_WAKEUP_PIN(PIN) (((PIN) == PWR_WAKEUP_PIN1) || \
                                 ((PIN) == PWR_WAKEUP_PIN2))
-#endif /* defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || defined (STM32F070xB) || */
-       /* defined (STM32F091xC) || defined (STM32F098xx) || defined (STM32F030xC) */
+#endif				/* defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || defined (STM32F070xB) || */
+	/* defined (STM32F091xC) || defined (STM32F098xx) || defined (STM32F030xC) */
 /**
   * @}
   */
@@ -130,21 +128,21 @@ typedef struct
     defined (STM32F071xB) || defined (STM32F072xB) || \
     defined (STM32F091xC)
 
-#define PWR_EXTI_LINE_PVD                   ((uint32_t)0x00010000)  /*!< External interrupt line 16 Connected to the PVD EXTI Line */
+#define PWR_EXTI_LINE_PVD                   ((uint32_t)0x00010000)	/*!< External interrupt line 16 Connected to the PVD EXTI Line */
 
-#endif /* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
-       /* defined (STM32F071xB) || defined (STM32F072xB) || */
-       /* defined (STM32F091xC) */
-      
+#endif				/* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
+	/* defined (STM32F071xB) || defined (STM32F072xB) || */
+	/* defined (STM32F091xC) */
+
 #if defined (STM32F042x6) || defined (STM32F048xx) || \
     defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
     defined (STM32F091xC) || defined (STM32F098xx)
 
-#define PWR_EXTI_LINE_VDDIO2                ((uint32_t)0x80000000)  /*!< External interrupt line 31 Connected to the Vddio2 Monitor EXTI Line */
+#define PWR_EXTI_LINE_VDDIO2                ((uint32_t)0x80000000)	/*!< External interrupt line 31 Connected to the Vddio2 Monitor EXTI Line */
 
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) ||\
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
-          defined (STM32F091xC) || defined (STM32F098xx) ||*/
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) ||\
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
+				   defined (STM32F091xC) || defined (STM32F098xx) || */
 /**
   * @}
   */
@@ -174,13 +172,13 @@ typedef struct
 /** @defgroup PWREx_PVD_Mode PWREx PVD Mode
   * @{
   */
-#define PWR_PVD_MODE_NORMAL                 ((uint32_t)0x00000000)   /*!< basic mode is used */
-#define PWR_PVD_MODE_IT_RISING              ((uint32_t)0x00010001)   /*!< External Interrupt Mode with Rising edge trigger detection */
-#define PWR_PVD_MODE_IT_FALLING             ((uint32_t)0x00010002)   /*!< External Interrupt Mode with Falling edge trigger detection */
-#define PWR_PVD_MODE_IT_RISING_FALLING      ((uint32_t)0x00010003)   /*!< External Interrupt Mode with Rising/Falling edge trigger detection */
-#define PWR_PVD_MODE_EVENT_RISING           ((uint32_t)0x00020001)   /*!< Event Mode with Rising edge trigger detection */
-#define PWR_PVD_MODE_EVENT_FALLING          ((uint32_t)0x00020002)   /*!< Event Mode with Falling edge trigger detection */
-#define PWR_PVD_MODE_EVENT_RISING_FALLING   ((uint32_t)0x00020003)   /*!< Event Mode with Rising/Falling edge trigger detection */
+#define PWR_PVD_MODE_NORMAL                 ((uint32_t)0x00000000)	/*!< basic mode is used */
+#define PWR_PVD_MODE_IT_RISING              ((uint32_t)0x00010001)	/*!< External Interrupt Mode with Rising edge trigger detection */
+#define PWR_PVD_MODE_IT_FALLING             ((uint32_t)0x00010002)	/*!< External Interrupt Mode with Falling edge trigger detection */
+#define PWR_PVD_MODE_IT_RISING_FALLING      ((uint32_t)0x00010003)	/*!< External Interrupt Mode with Rising/Falling edge trigger detection */
+#define PWR_PVD_MODE_EVENT_RISING           ((uint32_t)0x00020001)	/*!< Event Mode with Rising edge trigger detection */
+#define PWR_PVD_MODE_EVENT_FALLING          ((uint32_t)0x00020002)	/*!< Event Mode with Falling edge trigger detection */
+#define PWR_PVD_MODE_EVENT_RISING_FALLING   ((uint32_t)0x00020003)	/*!< Event Mode with Rising/Falling edge trigger detection */
 
 #define IS_PWR_PVD_MODE(MODE) (((MODE) == PWR_PVD_MODE_IT_RISING)|| ((MODE) == PWR_PVD_MODE_IT_FALLING) || \
                               ((MODE) == PWR_PVD_MODE_IT_RISING_FALLING) || ((MODE) == PWR_PVD_MODE_EVENT_RISING) || \
@@ -189,9 +187,9 @@ typedef struct
 /**
   * @}
   */
-#endif /* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
-       /* defined (STM32F071xB) || defined (STM32F072xB) || */
-       /* defined (STM32F091xC) */
+#endif				/* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
+	/* defined (STM32F071xB) || defined (STM32F072xB) || */
+	/* defined (STM32F091xC) */
 
 /** @defgroup PWREx_Flag PWREx Flag
   * @{
@@ -212,17 +210,17 @@ typedef struct
 #define PWR_FLAG_WU                         PWR_CSR_WUF
 #define PWR_FLAG_SB                         PWR_CSR_SBF
 
-#endif /* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
-       /* defined (STM32F071xB) || defined (STM32F072xB) || */
-       /* defined (STM32F091xC) */
+#endif				/* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
+	/* defined (STM32F071xB) || defined (STM32F072xB) || */
+	/* defined (STM32F091xC) */
 /**
   * @}
   */
 
 /**
   * @}
-  */ 
-  
+  */
+
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup PWREx_Exported_Macros PWREx Exported Macros
   * @{
@@ -291,10 +289,9 @@ typedef struct
   */
 #define __HAL_PWR_PVD_EXTI_GENERATE_SWIT()  (EXTI->SWIER |= (PWR_EXTI_LINE_PVD))
 
-#endif /* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
-       /* defined (STM32F071xB) || defined (STM32F072xB) || */
-       /* defined (STM32F091xC) */
-
+#endif				/* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
+	/* defined (STM32F071xB) || defined (STM32F072xB) || */
+	/* defined (STM32F091xC) */
 
 #if defined (STM32F042x6) || defined (STM32F048xx) || \
     defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
@@ -342,10 +339,9 @@ typedef struct
   */
 #define __HAL_PWR_VDDIO2_EXTI_GENERATE_SWIT()         (EXTI->SWIER |= (PWR_EXTI_LINE_VDDIO2))
 
-
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) ||\
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
-          defined (STM32F091xC) || defined (STM32F098xx) */
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) ||\
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
+				   defined (STM32F091xC) || defined (STM32F098xx) */
 
 /**
   * @}
@@ -364,40 +360,40 @@ typedef struct
 #if defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || \
     defined (STM32F071xB) || defined (STM32F072xB) || \
     defined (STM32F091xC)
-void HAL_PWR_PVD_IRQHandler(void);
-void HAL_PWR_PVDCallback(void);
-#endif /* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
-       /* defined (STM32F071xB) || defined (STM32F072xB) || */
-       /* defined (STM32F091xC) */
+	void HAL_PWR_PVD_IRQHandler(void);
+	void HAL_PWR_PVDCallback(void);
+#endif				/* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
+	/* defined (STM32F071xB) || defined (STM32F072xB) || */
+	/* defined (STM32F091xC) */
 
 #if defined (STM32F042x6) || defined (STM32F048xx) || \
     defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
     defined (STM32F091xC) || defined (STM32F098xx)
-void HAL_PWR_Vddio2Monitor_IRQHandler(void);
-void HAL_PWR_Vddio2MonitorCallback(void);
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) || \
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
-          defined (STM32F091xC) || defined (STM32F098xx) */
+	void HAL_PWR_Vddio2Monitor_IRQHandler(void);
+	void HAL_PWR_Vddio2MonitorCallback(void);
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) || \
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
+				   defined (STM32F091xC) || defined (STM32F098xx) */
 
 /* Peripheral Control functions  **********************************************/
 #if defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || \
     defined (STM32F071xB) || defined (STM32F072xB) || \
     defined (STM32F091xC)
-void HAL_PWR_PVDConfig(PWR_PVDTypeDef *sConfigPVD);
-void HAL_PWR_EnablePVD(void);
-void HAL_PWR_DisablePVD(void);
-#endif /* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
-       /* defined (STM32F071xB) || defined (STM32F072xB) || */
-       /* defined (STM32F091xC) */
-       
+	void HAL_PWR_PVDConfig(PWR_PVDTypeDef * sConfigPVD);
+	void HAL_PWR_EnablePVD(void);
+	void HAL_PWR_DisablePVD(void);
+#endif				/* defined (STM32F031x6) || defined (STM32F042x6) || defined (STM32F051x8) || */
+	/* defined (STM32F071xB) || defined (STM32F072xB) || */
+	/* defined (STM32F091xC) */
+
 #if defined (STM32F042x6) || defined (STM32F048xx) || \
     defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
     defined (STM32F091xC) || defined (STM32F098xx)
-void HAL_PWR_EnableVddio2Monitor(void);
-void HAL_PWR_DisableVddio2Monitor(void);
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) || \
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
-          defined (STM32F091xC) || defined (STM32F098xx) */
+	void HAL_PWR_EnableVddio2Monitor(void);
+	void HAL_PWR_DisableVddio2Monitor(void);
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) || \
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
+				   defined (STM32F091xC) || defined (STM32F098xx) */
 
 /**
   * @}
@@ -418,8 +414,5 @@ void HAL_PWR_DisableVddio2Monitor(void);
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F0xx_HAL_PWR_EX_H */
-
+#endif				/* __STM32F0xx_HAL_PWR_EX_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

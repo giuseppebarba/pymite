@@ -33,14 +33,14 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F0xx_HAL_PCD_H
 #define __STM32F0xx_HAL_PCD_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #if defined(STM32F042x6) || defined(STM32F048xx) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F070xB)|| defined(STM32F070x6)
@@ -54,137 +54,127 @@
 
 /** @addtogroup PCD
   * @{
-  */ 
+  */
 
-/* Exported types ------------------------------------------------------------*/ 
+/* Exported types ------------------------------------------------------------*/
 /** @defgroup PCD_Exported_Types PCD Exported Types
   * @{
   */
 
 /** 
   * @brief  PCD State structures definition  
-  */  
-typedef enum 
-{
-  PCD_READY    = 0x00,
-  PCD_ERROR    = 0x01,
-  PCD_BUSY     = 0x02,
-  PCD_TIMEOUT  = 0x03
-} PCD_StateTypeDef;
+  */
+	typedef enum {
+		PCD_READY = 0x00,
+		PCD_ERROR = 0x01,
+		PCD_BUSY = 0x02,
+		PCD_TIMEOUT = 0x03
+	} PCD_StateTypeDef;
 
-typedef enum
-{
-  /* double buffered endpoint direction */
-  PCD_EP_DBUF_OUT,
-  PCD_EP_DBUF_IN,
-  PCD_EP_DBUF_ERR,
-}PCD_EP_DBUF_DIR;
+	typedef enum {
+		/* double buffered endpoint direction */
+		PCD_EP_DBUF_OUT,
+		PCD_EP_DBUF_IN,
+		PCD_EP_DBUF_ERR,
+	} PCD_EP_DBUF_DIR;
 
 /* endpoint buffer number */
-typedef enum 
-{
-  PCD_EP_NOBUF,
-  PCD_EP_BUF0,
-  PCD_EP_BUF1
-}PCD_EP_BUF_NUM;  
+	typedef enum {
+		PCD_EP_NOBUF,
+		PCD_EP_BUF0,
+		PCD_EP_BUF1
+	} PCD_EP_BUF_NUM;
 
 /** 
   * @brief  PCD Initialization Structure definition  
   */
-typedef struct
-{
-  uint32_t dev_endpoints;        /*!< Device Endpoints number.
-                                      This parameter depends on the used USB core.   
-                                      This parameter must be a number between Min_Data = 1 and Max_Data = 15 */    
+	typedef struct {
+		uint32_t dev_endpoints;	/*!< Device Endpoints number.
+					   This parameter depends on the used USB core.   
+					   This parameter must be a number between Min_Data = 1 and Max_Data = 15 */
 
-  uint32_t speed;                /*!< USB Core speed.
-                                      This parameter can be any value of @ref PCD_Core_Speed                 */        
-                             
-  uint32_t ep0_mps;              /*!< Set the Endpoint 0 Max Packet size. 
-                                      This parameter can be any value of @ref PCD_EP0_MPS                    */              
-                       
-  uint32_t phy_itface;           /*!< Select the used PHY interface.
-                                      This parameter can be any value of @ref PCD_Core_PHY                   */ 
-                                
-  uint32_t Sof_enable;           /*!< Enable or disable the output of the SOF signal.                         
-                                      This parameter can be set to ENABLE or DISABLE                      */
-  
-  uint32_t low_power_enable;     /*!< Enable or disable Low Power mode                                      
-                                      This parameter can be set to ENABLE or DISABLE                      */
-  
-  uint32_t lpm_enable;           /*!< Enable or disable the Link Power Management .                                  
-                                      This parameter can be set to ENABLE or DISABLE                      */
+		uint32_t speed;	/*!< USB Core speed.
+				   This parameter can be any value of @ref PCD_Core_Speed                 */
 
-  uint32_t battery_charging_enable; /*!< Enable or disable Battery charging.                                  
-                                      This parameter can be set to ENABLE or DISABLE                      */                                    
-                                
-}PCD_InitTypeDef;
+		uint32_t ep0_mps;	/*!< Set the Endpoint 0 Max Packet size. 
+					   This parameter can be any value of @ref PCD_EP0_MPS                    */
 
-typedef struct
-{
-  uint8_t   num;            /*!< Endpoint number
-                                This parameter must be a number between Min_Data = 1 and Max_Data = 15    */ 
-                                
-  uint8_t   is_in;          /*!< Endpoint direction
-                                This parameter must be a number between Min_Data = 0 and Max_Data = 1     */ 
-  
-  uint8_t   is_stall;       /*!< Endpoint stall condition
-                                This parameter must be a number between Min_Data = 0 and Max_Data = 1     */ 
-  
-  uint8_t   type;           /*!< Endpoint type
-                                 This parameter can be any value of @ref PCD_EP_Type                      */ 
-                                
-  uint16_t  pmaadress;      /*!< PMA Address
-                                 This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */ 
-  
-  
-  uint16_t  pmaaddr0;       /*!< PMA Address0
-                                 This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */   
-  
-  
-  uint16_t  pmaaddr1;        /*!< PMA Address1
-                                 This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */   
-  
-  
-  uint8_t   doublebuffer;    /*!< Double buffer enable
-                                 This parameter can be 0 or 1                                             */    
-                                
-  uint32_t  maxpacket;      /*!< Endpoint Max packet size
-                                 This parameter must be a number between Min_Data = 0 and Max_Data = 64KB */
+		uint32_t phy_itface;	/*!< Select the used PHY interface.
+					   This parameter can be any value of @ref PCD_Core_PHY                   */
 
-  uint8_t   *xfer_buff;     /*!< Pointer to transfer buffer                                               */
-                                
-  
-  uint32_t  xfer_len;       /*!< Current transfer length                                                  */
-  
-  uint32_t  xfer_count;     /*!< Partial transfer length in case of multi packet transfer                 */
+		uint32_t Sof_enable;	/*!< Enable or disable the output of the SOF signal.                         
+					   This parameter can be set to ENABLE or DISABLE                      */
 
-}PCD_EPTypeDef;
+		uint32_t low_power_enable;	/*!< Enable or disable Low Power mode                                      
+						   This parameter can be set to ENABLE or DISABLE                      */
 
-typedef   USB_TypeDef PCD_TypeDef; 
+		uint32_t lpm_enable;	/*!< Enable or disable the Link Power Management .                                  
+					   This parameter can be set to ENABLE or DISABLE                      */
+
+		uint32_t battery_charging_enable;	/*!< Enable or disable Battery charging.                                  
+							   This parameter can be set to ENABLE or DISABLE                      */
+
+	} PCD_InitTypeDef;
+
+	typedef struct {
+		uint8_t num;	/*!< Endpoint number
+				   This parameter must be a number between Min_Data = 1 and Max_Data = 15    */
+
+		uint8_t is_in;	/*!< Endpoint direction
+				   This parameter must be a number between Min_Data = 0 and Max_Data = 1     */
+
+		uint8_t is_stall;	/*!< Endpoint stall condition
+					   This parameter must be a number between Min_Data = 0 and Max_Data = 1     */
+
+		uint8_t type;	/*!< Endpoint type
+				   This parameter can be any value of @ref PCD_EP_Type                      */
+
+		uint16_t pmaadress;	/*!< PMA Address
+					   This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */
+
+		uint16_t pmaaddr0;	/*!< PMA Address0
+					   This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */
+
+		uint16_t pmaaddr1;	/*!< PMA Address1
+					   This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */
+
+		uint8_t doublebuffer;	/*!< Double buffer enable
+					   This parameter can be 0 or 1                                             */
+
+		uint32_t maxpacket;	/*!< Endpoint Max packet size
+					   This parameter must be a number between Min_Data = 0 and Max_Data = 64KB */
+
+		uint8_t *xfer_buff;	/*!< Pointer to transfer buffer                                               */
+
+		uint32_t xfer_len;	/*!< Current transfer length                                                  */
+
+		uint32_t xfer_count;	/*!< Partial transfer length in case of multi packet transfer                 */
+
+	} PCD_EPTypeDef;
+
+	typedef USB_TypeDef PCD_TypeDef;
 
 /** 
   * @brief  PCD Handle Structure definition  
-  */ 
-typedef struct
-{
-  PCD_TypeDef             *Instance;   /*!< Register base address              */ 
-  PCD_InitTypeDef         Init;       /*!< PCD required parameters            */
-  __IO uint8_t            USB_Address; /*!< USB Address            */  
-  PCD_EPTypeDef           IN_ep[8];  /*!< IN endpoint parameters             */
-  PCD_EPTypeDef           OUT_ep[8]; /*!< OUT endpoint parameters            */
-  HAL_LockTypeDef         Lock;       /*!< PCD peripheral status              */
-  __IO PCD_StateTypeDef   State;      /*!< PCD communication state            */
-  uint32_t                Setup[12];  /*!< Setup packet buffer                */
-  void                    *pData;      /*!< Pointer to upper stack Handler     */    
-  
-} PCD_HandleTypeDef;
+  */
+	typedef struct {
+		PCD_TypeDef *Instance;	/*!< Register base address              */
+		PCD_InitTypeDef Init;	/*!< PCD required parameters            */
+		__IO uint8_t USB_Address;	/*!< USB Address            */
+		PCD_EPTypeDef IN_ep[8];	/*!< IN endpoint parameters             */
+		PCD_EPTypeDef OUT_ep[8];	/*!< OUT endpoint parameters            */
+		HAL_LockTypeDef Lock;	/*!< PCD peripheral status              */
+		__IO PCD_StateTypeDef State;	/*!< PCD communication state            */
+		uint32_t Setup[12];	/*!< Setup packet buffer                */
+		void *pData;	/*!< Pointer to upper stack Handler     */
+
+	} PCD_HandleTypeDef;
 
 /**
   * @}
-  */ 
- 
-#include "stm32f0xx_hal_pcd_ex.h"    
+  */
+
+#include "stm32f0xx_hal_pcd_ex.h"
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup PCD_Exported_Constants PCD Exported Constants
   * @{
@@ -193,12 +183,12 @@ typedef struct
 /** @defgroup PCD_Core_Speed PCD Core Speed
   * @{
   */
-#define PCD_SPEED_HIGH               0 /* Not Supported */
+#define PCD_SPEED_HIGH               0	/* Not Supported */
 #define PCD_SPEED_FULL               2
 /**
   * @}
   */
-  
+
   /** @defgroup PCD_Core_PHY PCD Core PHY
   * @{
   */
@@ -218,10 +208,10 @@ typedef struct
 #define PCD_EP0MPS_64                          DEP0CTL_MPS_64
 #define PCD_EP0MPS_32                          DEP0CTL_MPS_32
 #define PCD_EP0MPS_16                          DEP0CTL_MPS_16
-#define PCD_EP0MPS_08                          DEP0CTL_MPS_8 
+#define PCD_EP0MPS_08                          DEP0CTL_MPS_8
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup PCD_EP_Type PCD EP Type
   * @{
@@ -232,7 +222,7 @@ typedef struct
 #define PCD_EP_TYPE_INTR                                 3
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup PCD_ENDP_Type PCD_ENDP_Type
   * @{
@@ -254,11 +244,11 @@ typedef struct
 #define IS_PCD_ALL_INSTANCE                              IS_USB_ALL_INSTANCE
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */   
+  */
 
 /* Exported macros -----------------------------------------------------------*/
 
@@ -269,15 +259,15 @@ typedef struct
 #define __HAL_PCD_GET_FLAG(__HANDLE__, __INTERRUPT__)      ((((__HANDLE__)->Instance->ISTR) & (__INTERRUPT__)) == (__INTERRUPT__))
 #define __HAL_PCD_CLEAR_FLAG(__HANDLE__, __INTERRUPT__)    (((__HANDLE__)->Instance->ISTR) &= ~(__INTERRUPT__))
 
-#define  USB_EXTI_LINE_WAKEUP              ((uint32_t)0x00040000)  /*!< External interrupt line 18 Connected to the USB FS EXTI Line */
+#define  USB_EXTI_LINE_WAKEUP              ((uint32_t)0x00040000)	/*!< External interrupt line 18 Connected to the USB FS EXTI Line */
 
 #define __HAL_USB_EXTI_ENABLE_IT()                 EXTI->IMR |= USB_EXTI_LINE_WAKEUP
 #define __HAL_USB_EXTI_DISABLE_IT()                EXTI->IMR &= ~(USB_EXTI_LINE_WAKEUP)
 #define __HAL_USB_EXTI_GENERATE_SWIT(__EXTILINE__) (EXTI->SWIER |= (__EXTILINE__))
- 
+
 /**
   * @}
-  */                                                      
+  */
 
 /* Internal macros -----------------------------------------------------------*/
 
@@ -291,8 +281,6 @@ typedef struct
 
 /* GetENDPOINT */
 #define PCD_GET_ENDPOINT(USBx, bEpNum)        (*(&(USBx)->EP0R + (bEpNum) * 2))
-
-
 
 /**
   * @brief  sets the type in the endpoint register(bits EP_TYPE[1:0])
@@ -311,7 +299,6 @@ typedef struct
   * @retval Endpoint Type
   */
 #define PCD_GET_EPTYPE(USBx, bEpNum) (PCD_GET_ENDPOINT((USBx), (bEpNum)) & USB_EP_T_FIELD)
-
 
 /**
   * @brief free buffer used from the application realizing it to the line
@@ -368,7 +355,7 @@ typedef struct
    if((USB_EPTX_DTOG2 & (wState))!= 0)      \
      _wRegVal ^= USB_EPTX_DTOG2;        \
    PCD_SET_ENDPOINT((USBx), (bEpNum), (_wRegVal | USB_EP_CTR_RX|USB_EP_CTR_TX));    \
-  } /* PCD_SET_EP_TX_STATUS */
+  }				/* PCD_SET_EP_TX_STATUS */
 
 /**
   * @brief  sets the status for rx transfer (bits STAT_TX[1:0])
@@ -388,7 +375,7 @@ typedef struct
     if((USB_EPRX_DTOG2 & (wState))!= 0) \
       _wRegVal ^= USB_EPRX_DTOG2;  \
     PCD_SET_ENDPOINT((USBx), (bEpNum), (_wRegVal | USB_EP_CTR_RX|USB_EP_CTR_TX)); \
-  } /* PCD_SET_EP_RX_STATUS */
+  }				/* PCD_SET_EP_RX_STATUS */
 
 /**
   * @brief  sets the status for rx & tx (bits STAT_TX[1:0] & STAT_RX[1:0])
@@ -415,7 +402,7 @@ typedef struct
     if((USB_EPTX_DTOG2 & (wStatetx))!= 0)      \
       _wRegVal ^= USB_EPTX_DTOG2;        \
     PCD_SET_ENDPOINT((USBx), (bEpNum), _wRegVal | USB_EP_CTR_RX|USB_EP_CTR_TX);    \
-  } /* PCD_SET_EP_TXRX_STATUS */
+  }				/* PCD_SET_EP_TXRX_STATUS */
 
 /**
   * @brief  gets the status for tx/rx transfer (bits STAT_TX[1:0]
@@ -510,7 +497,7 @@ typedef struct
     PCD_RX_DTOG((USBx), (bEpNum))
 #define PCD_CLEAR_TX_DTOG(USBx, bEpNum)  if((PCD_GET_ENDPOINT((USBx), (bEpNum)) & USB_EP_DTOG_TX) != 0)\
     PCD_TX_DTOG((USBx), (bEpNum))
-      
+
 /**
   * @brief  Sets address in an endpoint register.
   * @param  USBx: USB peripheral instance register address.
@@ -565,20 +552,20 @@ typedef struct
     if(((wCount) & 0x1f) == 0)\
       (wNBlocks)--;\
     *pdwReg = (uint16_t)(((wNBlocks) << 10) | 0x8000);\
-  }/* PCD_CALC_BLK32 */
+  }				/* PCD_CALC_BLK32 */
 
 #define PCD_CALC_BLK2(dwReg,wCount,wNBlocks) {\
     (wNBlocks) = (wCount) >> 1;\
     if(((wCount) & 0x1) != 0)\
       (wNBlocks)++;\
     *pdwReg = (uint16_t)((wNBlocks) << 10);\
-  }/* PCD_CALC_BLK2 */
+  }				/* PCD_CALC_BLK2 */
 
 #define PCD_SET_EP_CNT_RX_REG(dwReg,wCount)  {\
     uint16_t wNBlocks;\
     if((wCount) > 62){PCD_CALC_BLK32((dwReg),(wCount),wNBlocks);}\
     else {PCD_CALC_BLK2((dwReg),(wCount),wNBlocks);}\
-  }/* PCD_SET_EP_CNT_RX_REG */
+  }				/* PCD_SET_EP_CNT_RX_REG */
 
 #define PCD_SET_EP_RX_DBUF0_CNT(USBx, bEpNum,wCount) {\
     uint16_t *pdwReg = PCD_EP_TX_CNT((USBx), (bEpNum)); \
@@ -627,7 +614,7 @@ typedef struct
 #define PCD_SET_EP_DBUF_ADDR(USBx, bEpNum,wBuf0Addr,wBuf1Addr) { \
     PCD_SET_EP_DBUF0_ADDR((USBx), (bEpNum), (wBuf0Addr));\
     PCD_SET_EP_DBUF1_ADDR((USBx), (bEpNum), (wBuf1Addr));\
-  } /* PCD_SET_EP_DBUF_ADDR */
+  }				/* PCD_SET_EP_DBUF_ADDR */
 
 /**
   * @brief  Gets buffer 0/1 address of a double buffer endpoint.
@@ -654,7 +641,7 @@ typedef struct
     else if((bDir) == PCD_EP_DBUF_IN)\
       /* IN endpoint */ \
       *PCD_EP_TX_CNT((USBx), (bEpNum)) = (uint32_t)(wCount);  \
-  } /* SetEPDblBuf0Count*/
+  }				/* SetEPDblBuf0Count */
 
 #define PCD_SET_EP_DBUF1_CNT(USBx, bEpNum, bDir, wCount)  { \
     if((bDir) == PCD_EP_DBUF_OUT)\
@@ -663,12 +650,12 @@ typedef struct
     else if((bDir) == PCD_EP_DBUF_IN)\
       /* IN endpoint */\
       *PCD_EP_RX_CNT((USBx), (bEpNum)) = (uint32_t)(wCount); \
-  } /* SetEPDblBuf1Count */
+  }				/* SetEPDblBuf1Count */
 
 #define PCD_SET_EP_DBUF_CNT(USBx, bEpNum, bDir, wCount) {\
     PCD_SET_EP_DBUF0_CNT((USBx), (bEpNum), (bDir), (wCount)); \
     PCD_SET_EP_DBUF1_CNT((USBx), (bEpNum), (bDir), (wCount)); \
-  } /* PCD_SET_EP_DBUF_CNT  */
+  }				/* PCD_SET_EP_DBUF_CNT  */
 
 /**
   * @brief  Gets buffer 0/1 rx/tx counter for double buffering.
@@ -678,7 +665,6 @@ typedef struct
   */
 #define PCD_GET_EP_DBUF0_CNT(USBx, bEpNum) (PCD_GET_EP_TX_CNT((USBx), (bEpNum)))
 #define PCD_GET_EP_DBUF1_CNT(USBx, bEpNum) (PCD_GET_EP_RX_CNT((USBx), (bEpNum)))
-
 
 /**
   * @}
@@ -694,10 +680,10 @@ typedef struct
   * @{
   */
 /* Initialization and de-initialization functions  **********************************/
-HAL_StatusTypeDef HAL_PCD_Init(PCD_HandleTypeDef *hpcd);
-HAL_StatusTypeDef HAL_PCD_DeInit (PCD_HandleTypeDef *hpcd);
-void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd);
+	HAL_StatusTypeDef HAL_PCD_Init(PCD_HandleTypeDef * hpcd);
+	HAL_StatusTypeDef HAL_PCD_DeInit(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_MspInit(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_MspDeInit(PCD_HandleTypeDef * hpcd);
 
 /**
   * @}
@@ -707,22 +693,26 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef *hpcd);
   * @{
   */
 /* IO operation functions  *****************************************************/
- /* Non Blocking mode: Interrupt */
-HAL_StatusTypeDef HAL_PCD_Start(PCD_HandleTypeDef *hpcd);
-HAL_StatusTypeDef HAL_PCD_Stop(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd);
+	/* Non Blocking mode: Interrupt */
+	HAL_StatusTypeDef HAL_PCD_Start(PCD_HandleTypeDef * hpcd);
+	HAL_StatusTypeDef HAL_PCD_Stop(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_IRQHandler(PCD_HandleTypeDef * hpcd);
 
-void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum);
-void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum);
-void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_ISOOUTIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum);
-void HAL_PCD_ISOINIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum);
-void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *hpcd);
-void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd);
+	void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef * hpcd,
+					  uint8_t epnum);
+	void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef * hpcd,
+					 uint8_t epnum);
+	void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_SOFCallback(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_ResetCallback(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_SuspendCallback(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_ResumeCallback(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_ISOOUTIncompleteCallback(PCD_HandleTypeDef * hpcd,
+					      uint8_t epnum);
+	void HAL_PCD_ISOINIncompleteCallback(PCD_HandleTypeDef * hpcd,
+					     uint8_t epnum);
+	void HAL_PCD_ConnectCallback(PCD_HandleTypeDef * hpcd);
+	void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef * hpcd);
 
 /**
   * @}
@@ -732,19 +722,32 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd);
   * @{
   */
 /* Peripheral Control functions  ************************************************/
-HAL_StatusTypeDef HAL_PCD_DevConnect(PCD_HandleTypeDef *hpcd);
-HAL_StatusTypeDef HAL_PCD_DevDisconnect(PCD_HandleTypeDef *hpcd);
-HAL_StatusTypeDef HAL_PCD_SetAddress(PCD_HandleTypeDef *hpcd, uint8_t address);
-HAL_StatusTypeDef HAL_PCD_EP_Open(PCD_HandleTypeDef *hpcd, uint8_t ep_addr, uint16_t ep_mps, uint8_t ep_type);
-HAL_StatusTypeDef HAL_PCD_EP_Close(PCD_HandleTypeDef *hpcd, uint8_t ep_addr);
-HAL_StatusTypeDef HAL_PCD_EP_Receive(PCD_HandleTypeDef *hpcd, uint8_t ep_addr, uint8_t *pBuf, uint32_t len);
-HAL_StatusTypeDef HAL_PCD_EP_Transmit(PCD_HandleTypeDef *hpcd, uint8_t ep_addr, uint8_t *pBuf, uint32_t len);
-uint16_t          HAL_PCD_EP_GetRxCount(PCD_HandleTypeDef *hpcd, uint8_t ep_addr);
-HAL_StatusTypeDef HAL_PCD_EP_SetStall(PCD_HandleTypeDef *hpcd, uint8_t ep_addr);
-HAL_StatusTypeDef HAL_PCD_EP_ClrStall(PCD_HandleTypeDef *hpcd, uint8_t ep_addr);
-HAL_StatusTypeDef HAL_PCD_EP_Flush(PCD_HandleTypeDef *hpcd, uint8_t ep_addr);
-HAL_StatusTypeDef HAL_PCD_ActiveRemoteWakeup(PCD_HandleTypeDef *hpcd);
-HAL_StatusTypeDef HAL_PCD_DeActiveRemoteWakeup(PCD_HandleTypeDef *hpcd);
+	HAL_StatusTypeDef HAL_PCD_DevConnect(PCD_HandleTypeDef * hpcd);
+	HAL_StatusTypeDef HAL_PCD_DevDisconnect(PCD_HandleTypeDef * hpcd);
+	HAL_StatusTypeDef HAL_PCD_SetAddress(PCD_HandleTypeDef * hpcd,
+					     uint8_t address);
+	HAL_StatusTypeDef HAL_PCD_EP_Open(PCD_HandleTypeDef * hpcd,
+					  uint8_t ep_addr, uint16_t ep_mps,
+					  uint8_t ep_type);
+	HAL_StatusTypeDef HAL_PCD_EP_Close(PCD_HandleTypeDef * hpcd,
+					   uint8_t ep_addr);
+	HAL_StatusTypeDef HAL_PCD_EP_Receive(PCD_HandleTypeDef * hpcd,
+					     uint8_t ep_addr, uint8_t * pBuf,
+					     uint32_t len);
+	HAL_StatusTypeDef HAL_PCD_EP_Transmit(PCD_HandleTypeDef * hpcd,
+					      uint8_t ep_addr, uint8_t * pBuf,
+					      uint32_t len);
+	uint16_t HAL_PCD_EP_GetRxCount(PCD_HandleTypeDef * hpcd,
+				       uint8_t ep_addr);
+	HAL_StatusTypeDef HAL_PCD_EP_SetStall(PCD_HandleTypeDef * hpcd,
+					      uint8_t ep_addr);
+	HAL_StatusTypeDef HAL_PCD_EP_ClrStall(PCD_HandleTypeDef * hpcd,
+					      uint8_t ep_addr);
+	HAL_StatusTypeDef HAL_PCD_EP_Flush(PCD_HandleTypeDef * hpcd,
+					   uint8_t ep_addr);
+	HAL_StatusTypeDef HAL_PCD_ActiveRemoteWakeup(PCD_HandleTypeDef * hpcd);
+	HAL_StatusTypeDef HAL_PCD_DeActiveRemoteWakeup(PCD_HandleTypeDef *
+						       hpcd);
 /**
   * @}
   */
@@ -753,7 +756,7 @@ HAL_StatusTypeDef HAL_PCD_DeActiveRemoteWakeup(PCD_HandleTypeDef *hpcd);
   * @{
   */
 /* Peripheral State functions  **************************************************/
-PCD_StateTypeDef HAL_PCD_GetState(PCD_HandleTypeDef *hpcd);
+	PCD_StateTypeDef HAL_PCD_GetState(PCD_HandleTypeDef * hpcd);
 /**
   * @}
   */
@@ -764,20 +767,16 @@ PCD_StateTypeDef HAL_PCD_GetState(PCD_HandleTypeDef *hpcd);
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
-#endif /* STM32F042x6 || STM32F072xB || STM32F078xx || STM32F070xB || STM32F070x6 */
+#endif				/* STM32F042x6 || STM32F072xB || STM32F078xx || STM32F070xB || STM32F070x6 */
 
 #ifdef __cplusplus
 }
 #endif
-
-
-#endif /* __STM32F0xx_HAL_PCD_H */
-
+#endif				/* __STM32F0xx_HAL_PCD_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

@@ -40,7 +40,7 @@
 #define __STM32F0xx_HAL_USART_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -52,14 +52,14 @@
 
 /** @defgroup USARTEx USARTEx Extended HAL module driver
   * @{
-  */ 
+  */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup USARTEx_Exported_Constants USARTEx Exported Constants
   * @{
   */
-  
+
 /** @defgroup USARTEx_Word_Length USARTEx Word Length
   * @{
   */
@@ -77,17 +77,17 @@
 #define USART_WORDLENGTH_9B                  ((uint32_t)USART_CR1_M)
 #define IS_USART_WORD_LENGTH(LENGTH) (((LENGTH) == USART_WORDLENGTH_8B) || \
                                       ((LENGTH) == USART_WORDLENGTH_9B))
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) || defined (STM32F070x6) || defined (STM32F070xB) || \
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
-          defined (STM32F091xC) || defined (STM32F098xx) || defined (STM32F030xC) */
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) || defined (STM32F070x6) || defined (STM32F070xB) || \
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
+				   defined (STM32F091xC) || defined (STM32F098xx) || defined (STM32F030xC) */
 /**
   * @}
   */
-  
+
 /**
   * @}
-  */  
-  
+  */
+
 /* Exported macro ------------------------------------------------------------*/
 
 /** @defgroup USARTEx_Exported_Macros USARTEx Exported Macros
@@ -155,7 +155,7 @@
     {                                                          \
       (__CLOCKSOURCE__) = USART_CLOCKSOURCE_UNDEFINED;         \
     }                                                          \
-  } while(0)  
+  } while(0)
 #elif defined (STM32F070xB)
 #define __HAL_USART_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
   do {                                                         \
@@ -196,7 +196,7 @@
     {                                                          \
       (__CLOCKSOURCE__) = USART_CLOCKSOURCE_UNDEFINED;         \
     }                                                          \
-  } while(0)  
+  } while(0)
 #elif defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx)
 #define __HAL_USART_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
   do {                                                         \
@@ -254,7 +254,7 @@
     {                                                          \
       (__CLOCKSOURCE__) = USART_CLOCKSOURCE_UNDEFINED;         \
     }                                                          \
-  } while(0)  
+  } while(0)
 #elif defined(STM32F091xC) || defined (STM32F098xx)
 #define __HAL_USART_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
   do {                                                         \
@@ -394,10 +394,9 @@
     {                                                          \
       (__CLOCKSOURCE__) = USART_CLOCKSOURCE_UNDEFINED;         \
     }                                                          \
-  } while(0)    
-#endif /* defined(STM32F030x6) || defined(STM32F031x6) || defined(STM32F038xx) */
+  } while(0)
+#endif				/* defined(STM32F030x6) || defined(STM32F031x6) || defined(STM32F038xx) */
 
-  
 /** @brief  Reports the USART mask to apply to retrieve the received data
   *         according to the word length and to the parity bits activation.
   *         If PCE = 1, the parity bit is not included in the data extracted
@@ -406,7 +405,7 @@
   *         DMA transfers.    
   * @param  __HANDLE__: specifies the USART Handle
   * @retval none
-  */  
+  */
 #if defined (STM32F042x6) || defined (STM32F048xx) || defined (STM32F070x6) || \
     defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || defined (STM32F070xB) || \
     defined (STM32F091xC) || defined (STM32F098xx) || defined (STM32F030xC)
@@ -445,7 +444,7 @@
         (__HANDLE__)->Mask = 0x003F ;                                 \
      }                                                                \
   }                                                                   \
-} while(0) 
+} while(0)
 #else
 #define __HAL_USART_MASK_COMPUTATION(__HANDLE__)                      \
   do {                                                                \
@@ -471,10 +470,10 @@
         (__HANDLE__)->Mask = 0x007F ;                                 \
      }                                                                \
   }                                                                   \
-} while(0) 
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) || defined (STM32F070x6) || \
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || defined (STM32F070xB) || \
-          defined (STM32F091xC) || defined (STM32F098xx) || defined (STM32F030xC) */
+} while(0)
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) || defined (STM32F070x6) || \
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || defined (STM32F070xB) || \
+				   defined (STM32F091xC) || defined (STM32F098xx) || defined (STM32F030xC) */
 /**
   * @}
   */
@@ -487,17 +486,14 @@
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
-  
+  */
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F0xx_HAL_USART_EX_H */
-
+#endif				/* __STM32F0xx_HAL_USART_EX_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

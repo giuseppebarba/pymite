@@ -92,8 +92,8 @@
   */
 void HAL_PWR_DeInit(void)
 {
-  __PWR_FORCE_RESET();
-  __PWR_RELEASE_RESET();
+	__PWR_FORCE_RESET();
+	__PWR_RELEASE_RESET();
 }
 
 /**
@@ -105,7 +105,7 @@ void HAL_PWR_DeInit(void)
   */
 void HAL_PWR_EnableBkUpAccess(void)
 {
-  PWR->CR |= (uint32_t)PWR_CR_DBP;
+	PWR->CR |= (uint32_t) PWR_CR_DBP;
 }
 
 /**
@@ -117,7 +117,7 @@ void HAL_PWR_EnableBkUpAccess(void)
   */
 void HAL_PWR_DisableBkUpAccess(void)
 {
-  PWR->CR &= ~((uint32_t)PWR_CR_DBP);
+	PWR->CR &= ~((uint32_t) PWR_CR_DBP);
 }
 
 /**
@@ -248,9 +248,9 @@ void HAL_PWR_DisableBkUpAccess(void)
   */
 void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx)
 {
-  /* Check the parameters */
-  assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
-  PWR->CSR |= (PWR_CSR_EWUP1 << (uint8_t)WakeUpPinx);
+	/* Check the parameters */
+	assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
+	PWR->CSR |= (PWR_CSR_EWUP1 << (uint8_t) WakeUpPinx);
 }
 
 /**
@@ -262,9 +262,9 @@ void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx)
   */
 void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx)
 {
-  /* Check the parameters */
-  assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
-  PWR->CSR &= ~(PWR_CSR_EWUP1 << (uint8_t)WakeUpPinx);
+	/* Check the parameters */
+	assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
+	PWR->CSR &= ~(PWR_CSR_EWUP1 << (uint8_t) WakeUpPinx);
 }
 
 /**
@@ -284,26 +284,23 @@ void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx)
   */
 void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry)
 {
-  /* Check the parameters */
-  assert_param(IS_PWR_REGULATOR(Regulator));
-  assert_param(IS_PWR_SLEEP_ENTRY(SLEEPEntry));
+	/* Check the parameters */
+	assert_param(IS_PWR_REGULATOR(Regulator));
+	assert_param(IS_PWR_SLEEP_ENTRY(SLEEPEntry));
 
-  /* Clear SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);
+	/* Clear SLEEPDEEP bit of Cortex System Control Register */
+	SCB->SCR &= (uint32_t) ~ ((uint32_t) SCB_SCR_SLEEPDEEP_Msk);
 
-  /* Select SLEEP mode entry -------------------------------------------------*/
-  if(SLEEPEntry == PWR_SLEEPENTRY_WFI)
-  {
-    /* Request Wait For Interrupt */
-    __WFI();
-  }
-  else
-  {
-    /* Request Wait For Event */
-    __SEV();
-    __WFE();
-    __WFE();
-  }
+	/* Select SLEEP mode entry ------------------------------------------------- */
+	if (SLEEPEntry == PWR_SLEEPENTRY_WFI) {
+		/* Request Wait For Interrupt */
+		__WFI();
+	} else {
+		/* Request Wait For Event */
+		__SEV();
+		__WFE();
+		__WFE();
+	}
 }
 
 /**
@@ -327,43 +324,40 @@ void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry)
   */
 void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry)
 {
-  uint32_t tmpreg = 0;
+	uint32_t tmpreg = 0;
 
-  /* Check the parameters */
-  assert_param(IS_PWR_REGULATOR(Regulator));
-  assert_param(IS_PWR_STOP_ENTRY(STOPEntry));
+	/* Check the parameters */
+	assert_param(IS_PWR_REGULATOR(Regulator));
+	assert_param(IS_PWR_STOP_ENTRY(STOPEntry));
 
-  /* Select the regulator state in STOP mode ---------------------------------*/
-  tmpreg = PWR->CR;
-  
-  /* Clear PDDS and LPDS bits */
-  tmpreg &= (uint32_t)~(PWR_CR_PDDS | PWR_CR_LPDS);
+	/* Select the regulator state in STOP mode --------------------------------- */
+	tmpreg = PWR->CR;
 
-  /* Set LPDS bit according to Regulator value */
-  tmpreg |= Regulator;
+	/* Clear PDDS and LPDS bits */
+	tmpreg &= (uint32_t) ~ (PWR_CR_PDDS | PWR_CR_LPDS);
 
-  /* Store the new value */
-  PWR->CR = tmpreg;
+	/* Set LPDS bit according to Regulator value */
+	tmpreg |= Regulator;
 
-  /* Set SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+	/* Store the new value */
+	PWR->CR = tmpreg;
 
-  /* Select STOP mode entry --------------------------------------------------*/
-  if(STOPEntry == PWR_STOPENTRY_WFI)
-  {
-    /* Request Wait For Interrupt */
-    __WFI();
-  }
-  else
-  {
-    /* Request Wait For Event */
-    __SEV();
-    __WFE();
-    __WFE();
-  }
+	/* Set SLEEPDEEP bit of Cortex System Control Register */
+	SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
-  /* Reset SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);
+	/* Select STOP mode entry -------------------------------------------------- */
+	if (STOPEntry == PWR_STOPENTRY_WFI) {
+		/* Request Wait For Interrupt */
+		__WFI();
+	} else {
+		/* Request Wait For Event */
+		__SEV();
+		__WFE();
+		__WFE();
+	}
+
+	/* Reset SLEEPDEEP bit of Cortex System Control Register */
+	SCB->SCR &= (uint32_t) ~ ((uint32_t) SCB_SCR_SLEEPDEEP_Msk);
 }
 
 /**
@@ -382,18 +376,18 @@ void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry)
   */
 void HAL_PWR_EnterSTANDBYMode(void)
 {
-  /* Select STANDBY mode */
-  PWR->CR |= (uint32_t)PWR_CR_PDDS;
+	/* Select STANDBY mode */
+	PWR->CR |= (uint32_t) PWR_CR_PDDS;
 
-  /* Set SLEEPDEEP bit of Cortex System Control Register */
-  SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+	/* Set SLEEPDEEP bit of Cortex System Control Register */
+	SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
-  /* This option is used to ensure that store operations are completed */
+	/* This option is used to ensure that store operations are completed */
 #if defined ( __CC_ARM)
-  __force_stores();
+	__force_stores();
 #endif
-  /* Request Wait For Interrupt */
-  __WFI();
+	/* Request Wait For Interrupt */
+	__WFI();
 }
 
 /**
@@ -406,10 +400,9 @@ void HAL_PWR_EnterSTANDBYMode(void)
   */
 void HAL_PWR_EnableSleepOnExit(void)
 {
-  /* Set SLEEPONEXIT bit of Cortex System Control Register */
-  SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPONEXIT_Msk));
+	/* Set SLEEPONEXIT bit of Cortex System Control Register */
+	SET_BIT(SCB->SCR, ((uint32_t) SCB_SCR_SLEEPONEXIT_Msk));
 }
-
 
 /**
   * @brief Disables Sleep-On-Exit feature when returning from Handler mode to Thread mode. 
@@ -419,11 +412,9 @@ void HAL_PWR_EnableSleepOnExit(void)
   */
 void HAL_PWR_DisableSleepOnExit(void)
 {
-  /* Clear SLEEPONEXIT bit of Cortex System Control Register */
-  CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SLEEPONEXIT_Msk));
+	/* Clear SLEEPONEXIT bit of Cortex System Control Register */
+	CLEAR_BIT(SCB->SCR, ((uint32_t) SCB_SCR_SLEEPONEXIT_Msk));
 }
-
-
 
 /**
   * @brief Enables CORTEX M4 SEVONPEND bit. 
@@ -433,10 +424,9 @@ void HAL_PWR_DisableSleepOnExit(void)
   */
 void HAL_PWR_EnableSEVOnPend(void)
 {
-  /* Set SEVONPEND bit of Cortex System Control Register */
-  SET_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SEVONPEND_Msk));
+	/* Set SEVONPEND bit of Cortex System Control Register */
+	SET_BIT(SCB->SCR, ((uint32_t) SCB_SCR_SEVONPEND_Msk));
 }
-
 
 /**
   * @brief Disables CORTEX M4 SEVONPEND bit. 
@@ -446,8 +436,8 @@ void HAL_PWR_EnableSEVOnPend(void)
   */
 void HAL_PWR_DisableSEVOnPend(void)
 {
-  /* Clear SEVONPEND bit of Cortex System Control Register */
-  CLEAR_BIT(SCB->SCR, ((uint32_t)SCB_SCR_SEVONPEND_Msk));
+	/* Clear SEVONPEND bit of Cortex System Control Register */
+	CLEAR_BIT(SCB->SCR, ((uint32_t) SCB_SCR_SEVONPEND_Msk));
 }
 
 /**

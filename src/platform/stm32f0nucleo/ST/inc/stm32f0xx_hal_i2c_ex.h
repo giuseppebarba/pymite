@@ -33,18 +33,18 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F0xx_HAL_I2C_EX_H
 #define __STM32F0xx_HAL_I2C_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx_hal_def.h"  
+#include "stm32f0xx_hal_def.h"
 
 /** @addtogroup STM32F0xx_HAL_Driver
   * @{
@@ -52,9 +52,9 @@
 
 /** @addtogroup I2CEx I2CEx Extended HAL module driver
   * @{
-  */ 
+  */
 
-/* Exported types ------------------------------------------------------------*/ 
+/* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
 /** @defgroup I2CEx_Exported_Constants I2CEx Exported Constants
@@ -80,11 +80,11 @@
 /**
   * @}
   */
-  
+
 /**
   * @}
-  */ 
-  
+  */
+
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 
@@ -96,22 +96,23 @@
   * @brief    Extended features functions
   * @{
   */
-  
+
 /* Peripheral Control functions  ************************************************/
-HAL_StatusTypeDef HAL_I2CEx_AnalogFilter_Config(I2C_HandleTypeDef *hi2c, uint32_t AnalogFilter);
-HAL_StatusTypeDef HAL_I2CEx_DigitalFilter_Config(I2C_HandleTypeDef *hi2c, uint32_t DigitalFilter);
-#if !defined(STM32F030x6) && !defined(STM32F030x8) && !defined(STM32F070x6) && !defined(STM32F070xB) && !defined(STM32F030xC) 
-HAL_StatusTypeDef HAL_I2CEx_EnableWakeUp (I2C_HandleTypeDef *hi2c);
-HAL_StatusTypeDef HAL_I2CEx_DisableWakeUp (I2C_HandleTypeDef *hi2c);
-#endif /* !(STM32F030x6) && !(STM32F030x8) && !(STM32F070x6) && !(STM32F070xB) && !(STM32F030xC)  */
+	HAL_StatusTypeDef HAL_I2CEx_AnalogFilter_Config(I2C_HandleTypeDef *
+							hi2c,
+							uint32_t AnalogFilter);
+	HAL_StatusTypeDef HAL_I2CEx_DigitalFilter_Config(I2C_HandleTypeDef *
+							 hi2c,
+							 uint32_t
+							 DigitalFilter);
+#if !defined(STM32F030x6) && !defined(STM32F030x8) && !defined(STM32F070x6) && !defined(STM32F070xB) && !defined(STM32F030xC)
+	HAL_StatusTypeDef HAL_I2CEx_EnableWakeUp(I2C_HandleTypeDef * hi2c);
+	HAL_StatusTypeDef HAL_I2CEx_DisableWakeUp(I2C_HandleTypeDef * hi2c);
+#endif				/* !(STM32F030x6) && !(STM32F030x8) && !(STM32F070x6) && !(STM32F070xB) && !(STM32F030xC)  */
 
 /**
   * @}
-  */ 
-
-/**
-  * @}
-  */   
+  */
 
 /**
   * @}
@@ -120,13 +121,13 @@ HAL_StatusTypeDef HAL_I2CEx_DisableWakeUp (I2C_HandleTypeDef *hi2c);
 /**
   * @}
   */
-    
+
+/**
+  * @}
+  */
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F0xx_HAL_I2C_EX_H */
-
-
+#endif				/* __STM32F0xx_HAL_I2C_EX_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

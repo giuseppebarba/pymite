@@ -40,7 +40,7 @@
 #define __STM32F0xx_HAL_PWR_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -59,7 +59,7 @@
 
 /** @defgroup PWR_Exported_Constants PWR Exported Constants
   * @{
-  */ 
+  */
 
 /** @defgroup PWR_Regulator_state_in_STOP_mode PWR Regulator state in STOP mode
   * @{
@@ -92,7 +92,6 @@
 /**
   * @}
   */
-
 
 /**
   * @}
@@ -133,7 +132,6 @@
   */
 #define __HAL_PWR_CLEAR_FLAG(__FLAG__) (PWR->CR |=  (__FLAG__) << 2)
 
-
 /**
   * @}
   */
@@ -146,13 +144,13 @@
 /** @addtogroup PWR_Exported_Functions PWR Exported Functions
   * @{
   */
-  
+
 /** @addtogroup PWR_Exported_Functions_Group1 Initialization and de-initialization functions 
   * @{
   */
 
 /* Initialization and de-initialization functions *****************************/
-void HAL_PWR_DeInit(void);
+	void HAL_PWR_DeInit(void);
 
 /**
   * @}
@@ -163,22 +161,22 @@ void HAL_PWR_DeInit(void);
   */
 
 /* Peripheral Control functions  **********************************************/
-void HAL_PWR_EnableBkUpAccess(void);
-void HAL_PWR_DisableBkUpAccess(void);
+	void HAL_PWR_EnableBkUpAccess(void);
+	void HAL_PWR_DisableBkUpAccess(void);
 
 /* WakeUp pins configuration functions ****************************************/
-void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx);
-void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx);
+	void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx);
+	void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx);
 
 /* Low Power modes configuration functions ************************************/
-void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry);
-void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry);
-void HAL_PWR_EnterSTANDBYMode(void);
+	void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry);
+	void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry);
+	void HAL_PWR_EnterSTANDBYMode(void);
 
-void HAL_PWR_EnableSleepOnExit(void);
-void HAL_PWR_DisableSleepOnExit(void);
-void HAL_PWR_EnableSEVOnPend(void);
-void HAL_PWR_DisableSEVOnPend(void);
+	void HAL_PWR_EnableSleepOnExit(void);
+	void HAL_PWR_DisableSleepOnExit(void);
+	void HAL_PWR_EnableSEVOnPend(void);
+	void HAL_PWR_DisableSEVOnPend(void);
 
 /**
   * @}
@@ -199,9 +197,5 @@ void HAL_PWR_DisableSEVOnPend(void);
 #ifdef __cplusplus
 }
 #endif
-
-
-#endif /* __STM32F0xx_HAL_PWR_H */
-
+#endif				/* __STM32F0xx_HAL_PWR_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

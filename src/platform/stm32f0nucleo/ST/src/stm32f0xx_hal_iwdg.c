@@ -102,7 +102,7 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************  
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
@@ -165,72 +165,69 @@
   *                the configuration information for the specified IWDG module.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
-{ 
-  uint32_t tickstart = 0;
+HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef * hiwdg)
+{
+	uint32_t tickstart = 0;
 
-  /* Check the IWDG handle allocation */
-  if(hiwdg == NULL)
-  {
-    return HAL_ERROR;
-  }
-  
-  /* Check the parameters */
-  assert_param(IS_IWDG_ALL_INSTANCE(hiwdg->Instance));
-  assert_param(IS_IWDG_PRESCALER(hiwdg->Init.Prescaler));
-  assert_param(IS_IWDG_RELOAD(hiwdg->Init.Reload));
-  assert_param(IS_IWDG_WINDOW(hiwdg->Init.Window));
+	/* Check the IWDG handle allocation */
+	if (hiwdg == NULL) {
+		return HAL_ERROR;
+	}
 
-  /* Check pending flag, if previous update not done, return error */
-  if((__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_PVU) != RESET)
-     &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET)
-     &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_WVU) != RESET))
-  {
-    return HAL_ERROR;
-  }
-  
-  if(hiwdg->State == HAL_IWDG_STATE_RESET)
-  { 
-  /* Init the low level hardware */
-  HAL_IWDG_MspInit(hiwdg);
-  }
+	/* Check the parameters */
+	assert_param(IS_IWDG_ALL_INSTANCE(hiwdg->Instance));
+	assert_param(IS_IWDG_PRESCALER(hiwdg->Init.Prescaler));
+	assert_param(IS_IWDG_RELOAD(hiwdg->Init.Reload));
+	assert_param(IS_IWDG_WINDOW(hiwdg->Init.Window));
 
-  /* Change IWDG peripheral state */
-  hiwdg->State = HAL_IWDG_STATE_BUSY;
+	/* Check pending flag, if previous update not done, return error */
+	if ((__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_PVU) != RESET)
+	    && (__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET)
+	    && (__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_WVU) != RESET)) {
+		return HAL_ERROR;
+	}
 
-  /* Enable write access to IWDG_PR, IWDG_RLR and IWDG_WINR registers */  
-  /* by writing 0x5555 in KR */  
-  __HAL_IWDG_ENABLE_WRITE_ACCESS(hiwdg);
-  
-  /* Write to IWDG registers the IWDG_Prescaler & IWDG_Reload values to work with */
-  MODIFY_REG(hiwdg->Instance->PR, IWDG_PR_PR, hiwdg->Init.Prescaler);
-  MODIFY_REG(hiwdg->Instance->RLR, IWDG_RLR_RL, hiwdg->Init.Reload);
- 
-  /* check if window option is enabled */
-  if (((hiwdg->Init.Window) != IWDG_WINDOW_DISABLE) || ((hiwdg->Instance->WINR) != IWDG_WINDOW_DISABLE))
-  {
-    tickstart = HAL_GetTick();
+	if (hiwdg->State == HAL_IWDG_STATE_RESET) {
+		/* Init the low level hardware */
+		HAL_IWDG_MspInit(hiwdg);
+	}
 
-     /* Wait for register to be updated */
-    while((uint32_t)(hiwdg->Instance->SR) != RESET)
-    {
-      if((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT)
-      { 
-        /* Set IWDG state */
-        hiwdg->State = HAL_IWDG_STATE_TIMEOUT;
-        return HAL_TIMEOUT;
-      } 
-    }
+	/* Change IWDG peripheral state */
+	hiwdg->State = HAL_IWDG_STATE_BUSY;
 
-    /* Write to IWDG WINR the IWDG_Window value to compare with */
-    MODIFY_REG(hiwdg->Instance->WINR, IWDG_WINR_WIN, hiwdg->Init.Window);
+	/* Enable write access to IWDG_PR, IWDG_RLR and IWDG_WINR registers */
+	/* by writing 0x5555 in KR */
+	__HAL_IWDG_ENABLE_WRITE_ACCESS(hiwdg);
 
-  } 
-  /* Change IWDG peripheral state */
-  hiwdg->State = HAL_IWDG_STATE_READY;
- 
-  /* Return function status */
-  return HAL_OK;
+	/* Write to IWDG registers the IWDG_Prescaler & IWDG_Reload values to work with */
+	MODIFY_REG(hiwdg->Instance->PR, IWDG_PR_PR, hiwdg->Init.Prescaler);
+	MODIFY_REG(hiwdg->Instance->RLR, IWDG_RLR_RL, hiwdg->Init.Reload);
+
+	/* check if window option is enabled */
+	if (((hiwdg->Init.Window) != IWDG_WINDOW_DISABLE)
+	    || ((hiwdg->Instance->WINR) != IWDG_WINDOW_DISABLE)) {
+		tickstart = HAL_GetTick();
+
+		/* Wait for register to be updated */
+		while ((uint32_t) (hiwdg->Instance->SR) != RESET) {
+			if ((HAL_GetTick() - tickstart) >
+			    HAL_IWDG_DEFAULT_TIMEOUT) {
+				/* Set IWDG state */
+				hiwdg->State = HAL_IWDG_STATE_TIMEOUT;
+				return HAL_TIMEOUT;
+			}
+		}
+
+		/* Write to IWDG WINR the IWDG_Window value to compare with */
+		MODIFY_REG(hiwdg->Instance->WINR, IWDG_WINR_WIN,
+			   hiwdg->Init.Window);
+
+	}
+	/* Change IWDG peripheral state */
+	hiwdg->State = HAL_IWDG_STATE_READY;
+
+	/* Return function status */
+	return HAL_OK;
 }
 
 /**
@@ -239,11 +236,11 @@ HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
   *                the configuration information for the specified IWDG module.
   * @retval None
   */
-__weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef *hiwdg)
+__weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef * hiwdg)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_IWDG_MspInit could be implemented in the user file
-   */
+	/* NOTE : This function Should not be modified, when the callback is needed,
+	   the HAL_IWDG_MspInit could be implemented in the user file
+	 */
 }
 
 /**
@@ -271,52 +268,49 @@ __weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef *hiwdg)
   *                the configuration information for the specified IWDG module.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_IWDG_Start(IWDG_HandleTypeDef *hiwdg)
-{ 
-  uint32_t tickstart = 0;
+HAL_StatusTypeDef HAL_IWDG_Start(IWDG_HandleTypeDef * hiwdg)
+{
+	uint32_t tickstart = 0;
 
-  /* Process Locked */
-  __HAL_LOCK(hiwdg); 
-                  
-    /* Change IWDG peripheral state */  
-  hiwdg->State = HAL_IWDG_STATE_BUSY;
-                   
-  /* Reload IWDG counter with value defined in the RLR register */
-  if ((hiwdg->Init.Window) == IWDG_WINDOW_DISABLE)
-  {
-  __HAL_IWDG_RELOAD_COUNTER(hiwdg);
-  }
+	/* Process Locked */
+	__HAL_LOCK(hiwdg);
 
-  /* Enable the IWDG peripheral */
-  __HAL_IWDG_START(hiwdg);
+	/* Change IWDG peripheral state */
+	hiwdg->State = HAL_IWDG_STATE_BUSY;
 
-  tickstart = HAL_GetTick();
+	/* Reload IWDG counter with value defined in the RLR register */
+	if ((hiwdg->Init.Window) == IWDG_WINDOW_DISABLE) {
+		__HAL_IWDG_RELOAD_COUNTER(hiwdg);
+	}
 
-  /* Wait until PVU, RVU, WVU flag are RESET */
-  while( (__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_PVU) != RESET)
-        &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET)
-        &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_WVU) != RESET) )
-  {
-    if((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT)
-    { 
-      /* Set IWDG state */
-      hiwdg->State = HAL_IWDG_STATE_TIMEOUT;
- 
-       /* Process unlocked */
-      __HAL_UNLOCK(hiwdg);
+	/* Enable the IWDG peripheral */
+	__HAL_IWDG_START(hiwdg);
 
-      return HAL_TIMEOUT;
-    } 
-  }
+	tickstart = HAL_GetTick();
 
-  /* Change IWDG peripheral state */    
-  hiwdg->State = HAL_IWDG_STATE_READY; 
-                  
-  /* Process Unlocked */
-  __HAL_UNLOCK(hiwdg);
-  
-  /* Return function status */
-  return HAL_OK;
+	/* Wait until PVU, RVU, WVU flag are RESET */
+	while ((__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_PVU) != RESET)
+	       && (__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET)
+	       && (__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_WVU) != RESET)) {
+		if ((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT) {
+			/* Set IWDG state */
+			hiwdg->State = HAL_IWDG_STATE_TIMEOUT;
+
+			/* Process unlocked */
+			__HAL_UNLOCK(hiwdg);
+
+			return HAL_TIMEOUT;
+		}
+	}
+
+	/* Change IWDG peripheral state */
+	hiwdg->State = HAL_IWDG_STATE_READY;
+
+	/* Process Unlocked */
+	__HAL_UNLOCK(hiwdg);
+
+	/* Return function status */
+	return HAL_OK;
 }
 
 /**
@@ -325,44 +319,42 @@ HAL_StatusTypeDef HAL_IWDG_Start(IWDG_HandleTypeDef *hiwdg)
   *                the configuration information for the specified IWDG module.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef *hiwdg)
-  {
-  uint32_t tickstart = 0;
+HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef * hiwdg)
+{
+	uint32_t tickstart = 0;
 
-  /* Process Locked */
-  __HAL_LOCK(hiwdg); 
-                  
-    /* Change IWDG peripheral state */  
-  hiwdg->State = HAL_IWDG_STATE_BUSY;
-  
-  tickstart = HAL_GetTick();
+	/* Process Locked */
+	__HAL_LOCK(hiwdg);
 
-  /* Wait until RVU flag is RESET */
-  while(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET)
-  {
-    if((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT)
-    { 
-      /* Set IWDG state */
-      hiwdg->State = HAL_IWDG_STATE_TIMEOUT;
+	/* Change IWDG peripheral state */
+	hiwdg->State = HAL_IWDG_STATE_BUSY;
 
-       /* Process unlocked */
-      __HAL_UNLOCK(hiwdg);
+	tickstart = HAL_GetTick();
 
-      return HAL_TIMEOUT;
-    } 
-  }
+	/* Wait until RVU flag is RESET */
+	while (__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET) {
+		if ((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT) {
+			/* Set IWDG state */
+			hiwdg->State = HAL_IWDG_STATE_TIMEOUT;
 
-  /* Reload IWDG counter with value defined in the reload register */
-  __HAL_IWDG_RELOAD_COUNTER(hiwdg);
-  
-  /* Change IWDG peripheral state */    
-  hiwdg->State = HAL_IWDG_STATE_READY; 
-                  
-  /* Process Unlocked */
-  __HAL_UNLOCK(hiwdg);
-  
-  /* Return function status */
-  return HAL_OK;
+			/* Process unlocked */
+			__HAL_UNLOCK(hiwdg);
+
+			return HAL_TIMEOUT;
+		}
+	}
+
+	/* Reload IWDG counter with value defined in the reload register */
+	__HAL_IWDG_RELOAD_COUNTER(hiwdg);
+
+	/* Change IWDG peripheral state */
+	hiwdg->State = HAL_IWDG_STATE_READY;
+
+	/* Process Unlocked */
+	__HAL_UNLOCK(hiwdg);
+
+	/* Return function status */
+	return HAL_OK;
 }
 
 /**
@@ -390,9 +382,9 @@ HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef *hiwdg)
   *                the configuration information for the specified IWDG module.
   * @retval HAL state
   */
-HAL_IWDG_StateTypeDef HAL_IWDG_GetState(IWDG_HandleTypeDef *hiwdg)
+HAL_IWDG_StateTypeDef HAL_IWDG_GetState(IWDG_HandleTypeDef * hiwdg)
 {
-  return hiwdg->State;
+	return hiwdg->State;
 }
 
 /**

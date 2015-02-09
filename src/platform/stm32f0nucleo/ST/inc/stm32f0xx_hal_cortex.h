@@ -33,14 +33,14 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F0xx_HAL_CORTEX_H
 #define __STM32F0xx_HAL_CORTEX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -52,13 +52,13 @@
 
 /** @addtogroup CORTEX CORTEX HAL module driver
   * @{
-  */ 
+  */
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup CORTEX_Exported_Constants CORTEX Exported Constants
   * @{
   */
-  
+
 /** @defgroup CORTEX_Priority CORTEX Priority
   * @{
   */
@@ -66,7 +66,7 @@
 /**
   * @}
   */
-  
+
 /** @defgroup CORTEX_SysTick_clock_source CORTEX SysTick clock source
   * @{
   */
@@ -81,7 +81,7 @@
 /**
   * @}
   */
-  
+
 /* Exported Macros -----------------------------------------------------------*/
 /** @defgroup CORTEX_Exported_Macro CORTEX Exported Macro
   * @{
@@ -117,11 +117,12 @@
  * @{
  */
 /* Initialization and de-initialization functions *******************************/
-void HAL_NVIC_SetPriority(IRQn_Type IRQn,uint32_t PreemptPriority, uint32_t SubPriority);
-void HAL_NVIC_EnableIRQ(IRQn_Type IRQn);
-void HAL_NVIC_DisableIRQ(IRQn_Type IRQn);
-void HAL_NVIC_SystemReset(void);
-uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb);
+	void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority,
+				  uint32_t SubPriority);
+	void HAL_NVIC_EnableIRQ(IRQn_Type IRQn);
+	void HAL_NVIC_DisableIRQ(IRQn_Type IRQn);
+	void HAL_NVIC_SystemReset(void);
+	uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb);
 /**
   * @}
   */
@@ -130,22 +131,22 @@ uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb);
  *  @brief   Cortex control functions
  * @{
  */
- 
+
 /* Peripheral Control functions *************************************************/
-uint32_t HAL_NVIC_GetPriority(IRQn_Type IRQn);
-uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn);
-void HAL_NVIC_SetPendingIRQ(IRQn_Type IRQn);
-void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn);
-void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource);
-void HAL_SYSTICK_IRQHandler(void);
-void HAL_SYSTICK_Callback(void);
+	uint32_t HAL_NVIC_GetPriority(IRQn_Type IRQn);
+	uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn);
+	void HAL_NVIC_SetPendingIRQ(IRQn_Type IRQn);
+	void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn);
+	void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource);
+	void HAL_SYSTICK_IRQHandler(void);
+	void HAL_SYSTICK_Callback(void);
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
@@ -154,13 +155,9 @@ void HAL_SYSTICK_Callback(void);
 /**
   * @}
   */
-    
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F0xx_HAL_CORTEX_H */
- 
-
+#endif				/* __STM32F0xx_HAL_CORTEX_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

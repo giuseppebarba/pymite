@@ -45,7 +45,7 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
@@ -76,9 +76,9 @@
   */
 void HAL_MspInit(void)
 {
-  /* NOTE : This function is generated automatically by MicroXplorer and eventually  
-            modified by the user
-   */ 
+	/* NOTE : This function is generated automatically by MicroXplorer and eventually  
+	   modified by the user
+	 */
 }
 
 /**
@@ -87,9 +87,9 @@ void HAL_MspInit(void)
   */
 void HAL_MspDeInit(void)
 {
-  /* NOTE : This function is generated automatically by MicroXplorer and eventually  
-            modified by the user
-   */
+	/* NOTE : This function is generated automatically by MicroXplorer and eventually  
+	   modified by the user
+	 */
 }
 
 /**
@@ -98,9 +98,9 @@ void HAL_MspDeInit(void)
   */
 void HAL_PPP_MspInit(void)
 {
-  /* NOTE : This function is generated automatically by MicroXplorer and eventually  
-            modified by the user
-   */ 
+	/* NOTE : This function is generated automatically by MicroXplorer and eventually  
+	   modified by the user
+	 */
 }
 
 /**
@@ -109,9 +109,9 @@ void HAL_PPP_MspInit(void)
   */
 void HAL_PPP_MspDeInit(void)
 {
-  /* NOTE : This function is generated automatically by MicroXplorer and eventually  
-            modified by the user
-   */
+	/* NOTE : This function is generated automatically by MicroXplorer and eventually  
+	   modified by the user
+	 */
 }
 
 /**

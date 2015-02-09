@@ -42,7 +42,6 @@
   (#) ADC input range: from Vref minud (connected to Vssa) to Vref plus(connected to 
       Vdda or to an external voltage reference).
 
-
                      ##### How to use this driver #####
   ==============================================================================
     [..]
@@ -149,8 +148,8 @@
 /* Private define ------------------------------------------------------------*/
 /** @defgroup ADCEx_Private_Constants ADCEx Private Constants
   * @{
-  */ 
- 
+  */
+
 /* Fixed timeout values for ADC calibration, enable settling time, disable  */
   /* settling time.                                                           */
   /* Values defined to be higher than worst cases: low clock frequency,       */
@@ -158,12 +157,12 @@
   /* Ex of profile low frequency : Clock source at 0.1 MHz, ADC clock         */
   /* prescaler 4.                                                             */
   /* Unit: ms                                                                 */
-  #define ADC_DISABLE_TIMEOUT           2
-  #define ADC_CALIBRATION_TIMEOUT       2      
+#define ADC_DISABLE_TIMEOUT           2
+#define ADC_CALIBRATION_TIMEOUT       2
 /**
   * @}
   */
-  
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -195,59 +194,55 @@
   * @param  hadc: ADC handle
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_ADCEx_Calibration_Start(ADC_HandleTypeDef* hadc)
+HAL_StatusTypeDef HAL_ADCEx_Calibration_Start(ADC_HandleTypeDef * hadc)
 {
-  HAL_StatusTypeDef tmpHALStatus = HAL_OK;
-  uint32_t tickstart=0;
-  
-  /* Check the parameters */
-  assert_param(IS_ADC_ALL_INSTANCE(hadc->Instance));
+	HAL_StatusTypeDef tmpHALStatus = HAL_OK;
+	uint32_t tickstart = 0;
 
-  /* Process locked */
-  __HAL_LOCK(hadc);
-       
-  /* Calibration prerequisite: ADC must be disabled.                          */
-  if (__HAL_ADC_IS_ENABLED(hadc) == RESET )
-  {
-    /* Change ADC state */
-    hadc->State = HAL_ADC_STATE_READY;
-    
-    /* Start ADC calibration */
-    hadc->Instance->CR |= ADC_CR_ADCAL;
+	/* Check the parameters */
+	assert_param(IS_ADC_ALL_INSTANCE(hadc->Instance));
 
-    tickstart = HAL_GetTick();  
+	/* Process locked */
+	__HAL_LOCK(hadc);
 
-    /* Wait for calibration completion */
-    while(HAL_IS_BIT_SET(hadc->Instance->CR, ADC_CR_ADCAL))
-    {
-      if((HAL_GetTick() - tickstart) > ADC_CALIBRATION_TIMEOUT)
-      {
-        /* Update ADC state machine to error */
-        hadc->State = HAL_ADC_STATE_ERROR;
-        
-        /* Process unlocked */
-        __HAL_UNLOCK(hadc);
-        
-        return HAL_ERROR;
-      }
-    }
-  }
-  else
-  {
-    /* Update ADC state machine to error */
-    hadc->State = HAL_ADC_STATE_ERROR;
-  }
-  
-  /* Process unlocked */
-  __HAL_UNLOCK(hadc);
-  
-  /* Return function status */
-  return tmpHALStatus;
+	/* Calibration prerequisite: ADC must be disabled.                          */
+	if (__HAL_ADC_IS_ENABLED(hadc) == RESET) {
+		/* Change ADC state */
+		hadc->State = HAL_ADC_STATE_READY;
+
+		/* Start ADC calibration */
+		hadc->Instance->CR |= ADC_CR_ADCAL;
+
+		tickstart = HAL_GetTick();
+
+		/* Wait for calibration completion */
+		while (HAL_IS_BIT_SET(hadc->Instance->CR, ADC_CR_ADCAL)) {
+			if ((HAL_GetTick() - tickstart) >
+			    ADC_CALIBRATION_TIMEOUT) {
+				/* Update ADC state machine to error */
+				hadc->State = HAL_ADC_STATE_ERROR;
+
+				/* Process unlocked */
+				__HAL_UNLOCK(hadc);
+
+				return HAL_ERROR;
+			}
+		}
+	} else {
+		/* Update ADC state machine to error */
+		hadc->State = HAL_ADC_STATE_ERROR;
+	}
+
+	/* Process unlocked */
+	__HAL_UNLOCK(hadc);
+
+	/* Return function status */
+	return tmpHALStatus;
 }
 
 /**
   * @}
-  */  
+  */
 
 /**
   * @}

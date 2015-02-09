@@ -33,7 +33,6 @@
 
       (#)  Enable the selected IRQ Channels using HAL_NVIC_EnableIRQ()
 
-
     [..]
     *** How to configure Systick using CORTEX HAL driver ***
     ========================================================
@@ -120,7 +119,6 @@
   * @{
   */
 
-
 /** @defgroup CORTEX_Exported_Functions_Group1 Initialization and de-initialization functions 
  *  @brief    Initialization and Configuration functions
  *
@@ -149,11 +147,12 @@
   *         no subpriority supported in Cortex M0 based products.   
   * @retval None
   */
-void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority)
-{ 
-  /* Check the parameters */
-  assert_param(IS_NVIC_PREEMPTION_PRIORITY(PreemptPriority));
-  NVIC_SetPriority(IRQn,PreemptPriority);
+void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority,
+			  uint32_t SubPriority)
+{
+	/* Check the parameters */
+	assert_param(IS_NVIC_PREEMPTION_PRIORITY(PreemptPriority));
+	NVIC_SetPriority(IRQn, PreemptPriority);
 }
 
 /**
@@ -167,8 +166,8 @@ void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t Sub
   */
 void HAL_NVIC_EnableIRQ(IRQn_Type IRQn)
 {
-  /* Enable interrupt */
-  NVIC_EnableIRQ(IRQn);
+	/* Enable interrupt */
+	NVIC_EnableIRQ(IRQn);
 }
 
 /**
@@ -180,8 +179,8 @@ void HAL_NVIC_EnableIRQ(IRQn_Type IRQn)
   */
 void HAL_NVIC_DisableIRQ(IRQn_Type IRQn)
 {
-  /* Disable interrupt */
-  NVIC_DisableIRQ(IRQn);
+	/* Disable interrupt */
+	NVIC_DisableIRQ(IRQn);
 }
 
 /**
@@ -190,8 +189,8 @@ void HAL_NVIC_DisableIRQ(IRQn_Type IRQn)
   */
 void HAL_NVIC_SystemReset(void)
 {
-  /* System Reset */
-  NVIC_SystemReset();
+	/* System Reset */
+	NVIC_SystemReset();
 }
 
 /**
@@ -203,8 +202,9 @@ void HAL_NVIC_SystemReset(void)
   */
 uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb)
 {
-   return SysTick_Config(TicksNumb);
+	return SysTick_Config(TicksNumb);
 }
+
 /**
   * @}
   */
@@ -220,11 +220,9 @@ uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb)
       This subsection provides a set of functions allowing to control the CORTEX
       (NVIC, SYSTICK) functionalities.
 
-
 @endverbatim
   * @{
   */
-
 
 /**
   * @brief  Gets the priority of an interrupt.
@@ -235,8 +233,8 @@ uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb)
   */
 uint32_t HAL_NVIC_GetPriority(IRQn_Type IRQn)
 {
-  /* Get priority for Cortex-M system or device specific interrupts */
-  return NVIC_GetPriority(IRQn);
+	/* Get priority for Cortex-M system or device specific interrupts */
+	return NVIC_GetPriority(IRQn);
 }
 
 /**
@@ -248,8 +246,8 @@ uint32_t HAL_NVIC_GetPriority(IRQn_Type IRQn)
   */
 void HAL_NVIC_SetPendingIRQ(IRQn_Type IRQn)
 {
-  /* Set interrupt pending */
-  NVIC_SetPendingIRQ(IRQn);
+	/* Set interrupt pending */
+	NVIC_SetPendingIRQ(IRQn);
 }
 
 /**
@@ -263,8 +261,8 @@ void HAL_NVIC_SetPendingIRQ(IRQn_Type IRQn)
   */
 uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn)
 {
-  /* Return 1 if pending else 0 */
-  return NVIC_GetPendingIRQ(IRQn);
+	/* Return 1 if pending else 0 */
+	return NVIC_GetPendingIRQ(IRQn);
 }
 
 /**
@@ -276,8 +274,8 @@ uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn)
   */
 void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 {
-  /* Clear pending interrupt */
-  NVIC_ClearPendingIRQ(IRQn);
+	/* Clear pending interrupt */
+	NVIC_ClearPendingIRQ(IRQn);
 }
 
 /**
@@ -290,16 +288,13 @@ void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn)
   */
 void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource)
 {
-  /* Check the parameters */
-  assert_param(IS_SYSTICK_CLK_SOURCE(CLKSource));
-  if (CLKSource == SYSTICK_CLKSOURCE_HCLK)
-  {
-    SysTick->CTRL |= SYSTICK_CLKSOURCE_HCLK;
-  }
-  else
-  {
-    SysTick->CTRL &= ~SYSTICK_CLKSOURCE_HCLK;
-  }
+	/* Check the parameters */
+	assert_param(IS_SYSTICK_CLK_SOURCE(CLKSource));
+	if (CLKSource == SYSTICK_CLKSOURCE_HCLK) {
+		SysTick->CTRL |= SYSTICK_CLKSOURCE_HCLK;
+	} else {
+		SysTick->CTRL &= ~SYSTICK_CLKSOURCE_HCLK;
+	}
 }
 
 /**
@@ -308,7 +303,7 @@ void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource)
   */
 void HAL_SYSTICK_IRQHandler(void)
 {
-  HAL_SYSTICK_Callback();
+	HAL_SYSTICK_Callback();
 }
 
 /**
@@ -317,9 +312,9 @@ void HAL_SYSTICK_IRQHandler(void)
   */
 __weak void HAL_SYSTICK_Callback(void)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_SYSTICK_Callback could be implemented in the user file
-   */
+	/* NOTE : This function Should not be modified, when the callback is needed,
+	   the HAL_SYSTICK_Callback could be implemented in the user file
+	 */
 }
 
 /**

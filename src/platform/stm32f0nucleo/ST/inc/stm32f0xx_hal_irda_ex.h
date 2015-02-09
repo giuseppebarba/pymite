@@ -40,10 +40,10 @@
 #define __STM32F0xx_HAL_IRDA_EX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
-#if !defined(STM32F030x6) && !defined(STM32F030x8) && !defined(STM32F070x6) && !defined(STM32F070xB) && !defined(STM32F030xC) 
+#if !defined(STM32F030x6) && !defined(STM32F030x8) && !defined(STM32F070x6) && !defined(STM32F070xB) && !defined(STM32F030xC)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal_def.h"
@@ -54,14 +54,14 @@
 
 /** @addtogroup IRDAEx IRDAEx Extended HAL module driver
   * @{
-  */ 
+  */
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup IRDAEx_Exported_Constants IRDAEx Exported Constants
   * @{
   */
-  
+
 /** @defgroup IRDAEx_Word_Length IRDA Word Length
   * @{
   */
@@ -79,24 +79,23 @@
 #define IRDA_WORDLENGTH_9B                  ((uint32_t)USART_CR1_M)
 #define IS_IRDA_WORD_LENGTH(LENGTH) (((LENGTH) == IRDA_WORDLENGTH_8B) || \
                                      ((LENGTH) == IRDA_WORDLENGTH_9B))
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) || \
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
-          defined (STM32F091xC) || defined (STM32F098xx)*/
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) || \
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
+				   defined (STM32F091xC) || defined (STM32F098xx) */
 /**
   * @}
   */
-  
-  
+
 /**
   * @}
-  */  
-  
+  */
+
 /* Exported macros -----------------------------------------------------------*/
 
 /** @defgroup IRDAEx_Exported_Macros IRDAEx Exported Macros
   * @{
   */
-  
+
 /** @brief  Reports the IRDA clock source.
   * @param  __HANDLE__: specifies the IRDA Handle
   * @param  __CLOCKSOURCE__ : output variable   
@@ -124,7 +123,7 @@
         (__CLOCKSOURCE__) = IRDA_CLOCKSOURCE_UNDEFINED;       \
         break;                                                \
      }                                                        \
-  } while(0) 
+  } while(0)
 #elif defined (STM32F042x6) || defined (STM32F048xx) ||       \
       defined (STM32F051x8) || defined (STM32F058xx)
 #define __HAL_IRDA_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
@@ -158,7 +157,7 @@
     {                                                         \
       (__CLOCKSOURCE__) = IRDA_CLOCKSOURCE_UNDEFINED;         \
     }                                                         \
-  } while(0) 
+  } while(0)
 #elif defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx)
 #define __HAL_IRDA_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
   do {                                                        \
@@ -216,7 +215,7 @@
     {                                                         \
       (__CLOCKSOURCE__) = IRDA_CLOCKSOURCE_UNDEFINED;         \
     }                                                         \
-  } while(0)   
+  } while(0)
 #elif defined(STM32F091xC) || defined(STM32F098xx)
 #define __HAL_IRDA_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
   do {                                                        \
@@ -308,15 +307,14 @@
       (__CLOCKSOURCE__) = IRDA_CLOCKSOURCE_UNDEFINED;         \
     }                                                         \
   } while(0)
-  
-#endif /* defined(STM32F031x6) || defined(STM32F038xx) */
-  
-  
+
+#endif				/* defined(STM32F031x6) || defined(STM32F038xx) */
+
 /** @brief  Computes the mask to apply to retrieve the received data
   *         according to the word length and to the parity bits activation.
   * @param  __HANDLE__: specifies the IRDA Handle
   * @retval none
-  */  
+  */
 #if defined (STM32F042x6) || defined (STM32F048xx) || \
     defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
     defined (STM32F091xC) || defined (STM32F098xx)
@@ -355,7 +353,7 @@
         (__HANDLE__)->Mask = 0x003F ;                                 \
      }                                                                \
   }                                                                   \
-} while(0) 
+} while(0)
 #else
 #define __HAL_IRDA_MASK_COMPUTATION(__HANDLE__)                       \
   do {                                                                \
@@ -381,14 +379,14 @@
         (__HANDLE__)->Mask = 0x007F ;                                 \
      }                                                                \
   }                                                                   \
-} while(0) 
-#endif /* defined (STM32F042x6) || defined (STM32F048xx) || \
-          defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
-          defined (STM32F091xC) || defined(STM32F098xx) */
+} while(0)
+#endif				/* defined (STM32F042x6) || defined (STM32F048xx) || \
+				   defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || \
+				   defined (STM32F091xC) || defined(STM32F098xx) */
 /**
   * @}
   */
-  
+
 /* Exported functions --------------------------------------------------------*/
 /* Initialization and de-initialization functions  ****************************/
 /* IO operation functions *****************************************************/
@@ -397,19 +395,16 @@
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
-#endif /* !defined(STM32F030x6) && !defined(STM32F030x8) && !defined(STM32F070x6) && !defined(STM32F070xB) && !defined(STM32F030xC)  */
-  
+#endif				/* !defined(STM32F030x6) && !defined(STM32F030x8) && !defined(STM32F070x6) && !defined(STM32F070xB) && !defined(STM32F030xC)  */
+
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __STM32F0xx_HAL_IRDA_EX_H */
-
+#endif				/* __STM32F0xx_HAL_IRDA_EX_H */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

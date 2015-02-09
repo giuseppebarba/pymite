@@ -66,7 +66,7 @@
 /**
   * @}
   */
- 
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -123,42 +123,38 @@
   *         detection level.
   * @retval None
   */
-void HAL_PWR_PVDConfig(PWR_PVDTypeDef *sConfigPVD)
+void HAL_PWR_PVDConfig(PWR_PVDTypeDef * sConfigPVD)
 {
-  /* Check the parameters */
-  assert_param(IS_PWR_PVD_LEVEL(sConfigPVD->PVDLevel));
-  assert_param(IS_PWR_PVD_MODE(sConfigPVD->Mode));
+	/* Check the parameters */
+	assert_param(IS_PWR_PVD_LEVEL(sConfigPVD->PVDLevel));
+	assert_param(IS_PWR_PVD_MODE(sConfigPVD->Mode));
 
-  /* Set PLS[7:5] bits according to PVDLevel value */
-  MODIFY_REG(PWR->CR, PWR_CR_PLS, sConfigPVD->PVDLevel);
-  
-  /* Clear any previous config. Keep it clear if no event or IT mode is selected */
-  __HAL_PWR_PVD_EXTI_DISABLE_EVENT();
-  __HAL_PWR_PVD_EXTI_DISABLE_IT();
-  __HAL_PWR_PVD_EXTI_CLEAR_EGDE_TRIGGER();
+	/* Set PLS[7:5] bits according to PVDLevel value */
+	MODIFY_REG(PWR->CR, PWR_CR_PLS, sConfigPVD->PVDLevel);
 
-  /* Configure interrupt mode */
-  if((sConfigPVD->Mode & PVD_MODE_IT) == PVD_MODE_IT)
-  {
-    __HAL_PWR_PVD_EXTI_ENABLE_IT();
-  }
-  
-  /* Configure event mode */
-  if((sConfigPVD->Mode & PVD_MODE_EVT) == PVD_MODE_EVT)
-  {
-    __HAL_PWR_PVD_EXTI_ENABLE_EVENT();
-  }
-  
-  /* Configure the edge */
-  if((sConfigPVD->Mode & PVD_RISING_EDGE) == PVD_RISING_EDGE)
-  {
-    __HAL_PWR_PVD_EXTI_SET_RISING_EDGE_TRIGGER();
-  }
-  
-  if((sConfigPVD->Mode & PVD_FALLING_EDGE) == PVD_FALLING_EDGE)
-  {
-    __HAL_PWR_PVD_EXTI_SET_FALLING_EGDE_TRIGGER();
-  }
+	/* Clear any previous config. Keep it clear if no event or IT mode is selected */
+	__HAL_PWR_PVD_EXTI_DISABLE_EVENT();
+	__HAL_PWR_PVD_EXTI_DISABLE_IT();
+	__HAL_PWR_PVD_EXTI_CLEAR_EGDE_TRIGGER();
+
+	/* Configure interrupt mode */
+	if ((sConfigPVD->Mode & PVD_MODE_IT) == PVD_MODE_IT) {
+		__HAL_PWR_PVD_EXTI_ENABLE_IT();
+	}
+
+	/* Configure event mode */
+	if ((sConfigPVD->Mode & PVD_MODE_EVT) == PVD_MODE_EVT) {
+		__HAL_PWR_PVD_EXTI_ENABLE_EVENT();
+	}
+
+	/* Configure the edge */
+	if ((sConfigPVD->Mode & PVD_RISING_EDGE) == PVD_RISING_EDGE) {
+		__HAL_PWR_PVD_EXTI_SET_RISING_EDGE_TRIGGER();
+	}
+
+	if ((sConfigPVD->Mode & PVD_FALLING_EDGE) == PVD_FALLING_EDGE) {
+		__HAL_PWR_PVD_EXTI_SET_FALLING_EGDE_TRIGGER();
+	}
 }
 
 /**
@@ -167,7 +163,7 @@ void HAL_PWR_PVDConfig(PWR_PVDTypeDef *sConfigPVD)
   */
 void HAL_PWR_EnablePVD(void)
 {
-  PWR->CR |= (uint32_t)PWR_CR_PVDE;
+	PWR->CR |= (uint32_t) PWR_CR_PVDE;
 }
 
 /**
@@ -176,7 +172,7 @@ void HAL_PWR_EnablePVD(void)
   */
 void HAL_PWR_DisablePVD(void)
 {
-  PWR->CR &= ~((uint32_t)PWR_CR_PVDE);
+	PWR->CR &= ~((uint32_t) PWR_CR_PVDE);
 }
 
 /**
@@ -186,15 +182,14 @@ void HAL_PWR_DisablePVD(void)
   */
 void HAL_PWR_PVD_IRQHandler(void)
 {
-  /* Check PWR exti flag */
-  if(__HAL_PWR_PVD_EXTI_GET_FLAG() != RESET)
-  {
-    /* PWR PVD interrupt user callback */
-    HAL_PWR_PVDCallback();
+	/* Check PWR exti flag */
+	if (__HAL_PWR_PVD_EXTI_GET_FLAG() != RESET) {
+		/* PWR PVD interrupt user callback */
+		HAL_PWR_PVDCallback();
 
-    /* Clear PWR Exti pending bit */
-    __HAL_PWR_PVD_EXTI_CLEAR_FLAG();
-  }
+		/* Clear PWR Exti pending bit */
+		__HAL_PWR_PVD_EXTI_CLEAR_FLAG();
+	}
 }
 
 /**
@@ -203,9 +198,9 @@ void HAL_PWR_PVD_IRQHandler(void)
   */
 __weak void HAL_PWR_PVDCallback(void)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_PWR_PVDCallback could be implemented in the user file
-   */
+	/* NOTE : This function Should not be modified, when the callback is needed,
+	   the HAL_PWR_PVDCallback could be implemented in the user file
+	 */
 }
 
 #endif /* defined (STM32F031x6) || defined (STM32F051x8) || */
@@ -224,8 +219,8 @@ __weak void HAL_PWR_PVDCallback(void)
   */
 void HAL_PWR_EnableVddio2Monitor(void)
 {
-  __HAL_PWR_VDDIO2_EXTI_ENABLE_IT();
-  __HAL_PWR_VDDIO2_EXTI_SET_FALLING_EGDE_TRIGGER();
+	__HAL_PWR_VDDIO2_EXTI_ENABLE_IT();
+	__HAL_PWR_VDDIO2_EXTI_SET_FALLING_EGDE_TRIGGER();
 }
 
 /**
@@ -234,8 +229,8 @@ void HAL_PWR_EnableVddio2Monitor(void)
   */
 void HAL_PWR_DisableVddio2Monitor(void)
 {
-  __HAL_PWR_VDDIO2_EXTI_DISABLE_IT();
-  __HAL_PWR_VDDIO2_EXTI_CLEAR_EGDE_TRIGGER();
+	__HAL_PWR_VDDIO2_EXTI_DISABLE_IT();
+	__HAL_PWR_VDDIO2_EXTI_CLEAR_EGDE_TRIGGER();
 
 }
 
@@ -246,15 +241,14 @@ void HAL_PWR_DisableVddio2Monitor(void)
   */
 void HAL_PWR_Vddio2Monitor_IRQHandler(void)
 {
-  /* Check PWR exti flag */
-  if(__HAL_PWR_VDDIO2_EXTI_GET_FLAG() != RESET)
-  {
-    /* PWR Vddio2 monitor interrupt user callback */
-    HAL_PWR_Vddio2MonitorCallback();
+	/* Check PWR exti flag */
+	if (__HAL_PWR_VDDIO2_EXTI_GET_FLAG() != RESET) {
+		/* PWR Vddio2 monitor interrupt user callback */
+		HAL_PWR_Vddio2MonitorCallback();
 
-    /* Clear PWR Exti pending bit */
-    __HAL_PWR_VDDIO2_EXTI_CLEAR_FLAG();
-  }
+		/* Clear PWR Exti pending bit */
+		__HAL_PWR_VDDIO2_EXTI_CLEAR_FLAG();
+	}
 }
 
 /**
@@ -263,9 +257,9 @@ void HAL_PWR_Vddio2Monitor_IRQHandler(void)
   */
 __weak void HAL_PWR_Vddio2MonitorCallback(void)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_PWR_Vddio2MonitorCallback could be implemented in the user file
-   */
+	/* NOTE : This function Should not be modified, when the callback is needed,
+	   the HAL_PWR_Vddio2MonitorCallback could be implemented in the user file
+	 */
 }
 
 #endif /* defined (STM32F042x6) || defined (STM32F048xx) || \

@@ -39,7 +39,6 @@
           (++) COMP_EXTI_LINE_COMP1_EVENT
           (++) COMP_EXTI_LINE_COMP2_EVENT
 
-
 [..] Table 1. COMP Inputs for the STM32F05x, STM32F07x and STM32F09x devices
  +--------------------------------------------------+    
  |                 |                | COMP1 | COMP2 |
@@ -166,14 +165,14 @@
 /** @defgroup COMP_Private_Constants COMP Private Constants
   * @{
   */
-/* CSR register reset value */ 
+/* CSR register reset value */
 #define COMP_CSR_RESET_VALUE            ((uint32_t)0x00000000)
-/* CSR register masks */ 
+/* CSR register masks */
 #define COMP_CSR_RESET_PARAMETERS_MASK   ((uint32_t)0x00003FFF)
 #define COMP_CSR_UPDATE_PARAMETERS_MASK  ((uint32_t)0x00003FFE)
-/* CSR COMPx non inverting input mask */ 
+/* CSR COMPx non inverting input mask */
 #define COMP_CSR_COMPxNONINSEL_MASK      ((uint16_t)COMP_CSR_COMP1SW1)
-/* CSR COMP2 shift */ 
+/* CSR COMP2 shift */
 #define COMP_CSR_COMP1_SHIFT             0U
 #define COMP_CSR_COMP2_SHIFT             16U
 /**
@@ -209,79 +208,75 @@
   * @param  hcomp: COMP handle
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
-{ 
-  HAL_StatusTypeDef status = HAL_OK;
-  uint32_t regshift = COMP_CSR_COMP1_SHIFT;
-  
-  /* Check the COMP handle allocation and lock status */
-  if((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET))
-  {
-    status = HAL_ERROR;
-  }
-  else
-  {
-    /* Check the parameter */
-    assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
-    assert_param(IS_COMP_INVERTINGINPUT(hcomp->Init.InvertingInput));
-    assert_param(IS_COMP_NONINVERTINGINPUT(hcomp->Init.NonInvertingInput));
-    assert_param(IS_COMP_OUTPUT(hcomp->Init.Output));
-    assert_param(IS_COMP_OUTPUTPOL(hcomp->Init.OutputPol));
-    assert_param(IS_COMP_HYSTERESIS(hcomp->Init.Hysteresis));
-    assert_param(IS_COMP_MODE(hcomp->Init.Mode));
-    
-    if(hcomp->Init.NonInvertingInput == COMP_NONINVERTINGINPUT_DAC1SWITCHCLOSED)
-    {
-      assert_param(IS_COMP_DAC1SWITCH_INSTANCE(hcomp->Instance));
-    }
-  
-    if(hcomp->Init.WindowMode != COMP_WINDOWMODE_DISABLED)
-    {
-      assert_param(IS_COMP_WINDOWMODE_INSTANCE(hcomp->Instance));
-    }
-  
-    if(hcomp->State == HAL_COMP_STATE_RESET)
-    {
-      /* Init SYSCFG and the low level hardware to access comparators */
-      __SYSCFG_CLK_ENABLE();
+HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef * hcomp)
+{
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t regshift = COMP_CSR_COMP1_SHIFT;
 
-      HAL_COMP_MspInit(hcomp);
-    }
-  
-    /* Set COMP parameters */
-    /*     Set COMPxINSEL bits according to hcomp->Init.InvertingInput value        */
-    /*     Set COMPxOUTSEL bits according to hcomp->Init.Output value               */
-    /*     Set COMPxPOL bit according to hcomp->Init.OutputPol value                */
-    /*     Set COMPxHYST bits according to hcomp->Init.Hysteresis value             */
-    /*     Set COMPxMODE bits according to hcomp->Init.Mode value                   */
-    if(hcomp->Instance == COMP2)
-    {
-      regshift = COMP_CSR_COMP2_SHIFT;
-    }
-    MODIFY_REG(COMP->CSR, 
-               (uint32_t)(COMP_CSR_COMPxINSEL  | COMP_CSR_COMPxNONINSEL_MASK | \
-                COMP_CSR_COMPxOUTSEL | COMP_CSR_COMPxPOL           | \
-                COMP_CSR_COMPxHYST   | COMP_CSR_COMPxMODE) << regshift,
-               (hcomp->Init.InvertingInput    | \
-                hcomp->Init.NonInvertingInput | \
-                hcomp->Init.Output            | \
-                hcomp->Init.OutputPol         | \
-                hcomp->Init.Hysteresis        | \
-                hcomp->Init.Mode) << regshift);   
-    
-    if(hcomp->Init.WindowMode != COMP_WINDOWMODE_DISABLED)
-    {
-      COMP->CSR |= COMP_CSR_WNDWEN;
-    }
+	/* Check the COMP handle allocation and lock status */
+	if ((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET)) {
+		status = HAL_ERROR;
+	} else {
+		/* Check the parameter */
+		assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
+		assert_param(IS_COMP_INVERTINGINPUT
+			     (hcomp->Init.InvertingInput));
+		assert_param(IS_COMP_NONINVERTINGINPUT
+			     (hcomp->Init.NonInvertingInput));
+		assert_param(IS_COMP_OUTPUT(hcomp->Init.Output));
+		assert_param(IS_COMP_OUTPUTPOL(hcomp->Init.OutputPol));
+		assert_param(IS_COMP_HYSTERESIS(hcomp->Init.Hysteresis));
+		assert_param(IS_COMP_MODE(hcomp->Init.Mode));
 
-    /* Initialize the COMP state*/
-    if(hcomp->State == HAL_COMP_STATE_RESET)
-    {
-      hcomp->State = HAL_COMP_STATE_READY;
-    }
-  }
-  
-  return status;
+		if (hcomp->Init.NonInvertingInput ==
+		    COMP_NONINVERTINGINPUT_DAC1SWITCHCLOSED) {
+			assert_param(IS_COMP_DAC1SWITCH_INSTANCE
+				     (hcomp->Instance));
+		}
+
+		if (hcomp->Init.WindowMode != COMP_WINDOWMODE_DISABLED) {
+			assert_param(IS_COMP_WINDOWMODE_INSTANCE
+				     (hcomp->Instance));
+		}
+
+		if (hcomp->State == HAL_COMP_STATE_RESET) {
+			/* Init SYSCFG and the low level hardware to access comparators */
+			__SYSCFG_CLK_ENABLE();
+
+			HAL_COMP_MspInit(hcomp);
+		}
+
+		/* Set COMP parameters */
+		/*     Set COMPxINSEL bits according to hcomp->Init.InvertingInput value        */
+		/*     Set COMPxOUTSEL bits according to hcomp->Init.Output value               */
+		/*     Set COMPxPOL bit according to hcomp->Init.OutputPol value                */
+		/*     Set COMPxHYST bits according to hcomp->Init.Hysteresis value             */
+		/*     Set COMPxMODE bits according to hcomp->Init.Mode value                   */
+		if (hcomp->Instance == COMP2) {
+			regshift = COMP_CSR_COMP2_SHIFT;
+		}
+		MODIFY_REG(COMP->CSR,
+			   (uint32_t) (COMP_CSR_COMPxINSEL |
+				       COMP_CSR_COMPxNONINSEL_MASK |
+				       COMP_CSR_COMPxOUTSEL | COMP_CSR_COMPxPOL
+				       | COMP_CSR_COMPxHYST |
+				       COMP_CSR_COMPxMODE) << regshift,
+			   (hcomp->Init.InvertingInput | hcomp->Init.
+			    NonInvertingInput | hcomp->Init.Output | hcomp->
+			    Init.OutputPol | hcomp->Init.Hysteresis | hcomp->
+			    Init.Mode) << regshift);
+
+		if (hcomp->Init.WindowMode != COMP_WINDOWMODE_DISABLED) {
+			COMP->CSR |= COMP_CSR_WNDWEN;
+		}
+
+		/* Initialize the COMP state */
+		if (hcomp->State == HAL_COMP_STATE_RESET) {
+			hcomp->State = HAL_COMP_STATE_READY;
+		}
+	}
+
+	return status;
 }
 
 /**
@@ -291,37 +286,33 @@ HAL_StatusTypeDef HAL_COMP_Init(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_COMP_DeInit(COMP_HandleTypeDef *hcomp)
+HAL_StatusTypeDef HAL_COMP_DeInit(COMP_HandleTypeDef * hcomp)
 {
-  HAL_StatusTypeDef status = HAL_OK;
-  uint32_t regshift = COMP_CSR_COMP1_SHIFT;
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t regshift = COMP_CSR_COMP1_SHIFT;
 
-  /* Check the COMP handle allocation and lock status */
-  if((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET))
-  {
-    status = HAL_ERROR;
-  }
-  else
-  {
-    /* Check the parameter */
-    assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
+	/* Check the COMP handle allocation and lock status */
+	if ((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET)) {
+		status = HAL_ERROR;
+	} else {
+		/* Check the parameter */
+		assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
 
-    /* Set COMP_CSR register to reset value for the corresponding COMP instance */
-    if(hcomp->Instance == COMP2)
-    {
-      regshift = COMP_CSR_COMP2_SHIFT;
-    }
-    MODIFY_REG(COMP->CSR, 
-               COMP_CSR_RESET_PARAMETERS_MASK << regshift, 
-               COMP_CSR_RESET_VALUE << regshift);
-    
-    /* DeInit the low level hardware: SYSCFG, GPIO, CLOCK and NVIC */
-    HAL_COMP_MspDeInit(hcomp);
+		/* Set COMP_CSR register to reset value for the corresponding COMP instance */
+		if (hcomp->Instance == COMP2) {
+			regshift = COMP_CSR_COMP2_SHIFT;
+		}
+		MODIFY_REG(COMP->CSR,
+			   COMP_CSR_RESET_PARAMETERS_MASK << regshift,
+			   COMP_CSR_RESET_VALUE << regshift);
 
-    hcomp->State = HAL_COMP_STATE_RESET;
-  }
-  
-  return status;
+		/* DeInit the low level hardware: SYSCFG, GPIO, CLOCK and NVIC */
+		HAL_COMP_MspDeInit(hcomp);
+
+		hcomp->State = HAL_COMP_STATE_RESET;
+	}
+
+	return status;
 }
 
 /**
@@ -329,11 +320,11 @@ HAL_StatusTypeDef HAL_COMP_DeInit(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval None
   */
-__weak void HAL_COMP_MspInit(COMP_HandleTypeDef *hcomp)
+__weak void HAL_COMP_MspInit(COMP_HandleTypeDef * hcomp)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_COMP_MspInit could be implenetd in the user file
-   */
+	/* NOTE : This function Should not be modified, when the callback is needed,
+	   the HAL_COMP_MspInit could be implenetd in the user file
+	 */
 }
 
 /**
@@ -341,11 +332,11 @@ __weak void HAL_COMP_MspInit(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval None
   */
-__weak void HAL_COMP_MspDeInit(COMP_HandleTypeDef *hcomp)
+__weak void HAL_COMP_MspDeInit(COMP_HandleTypeDef * hcomp)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_COMP_MspDeInit could be implenetd in the user file
-   */
+	/* NOTE : This function Should not be modified, when the callback is needed,
+	   the HAL_COMP_MspDeInit could be implenetd in the user file
+	 */
 }
 
 /**
@@ -372,39 +363,33 @@ __weak void HAL_COMP_MspDeInit(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_COMP_Start(COMP_HandleTypeDef *hcomp)
-{ 
-  HAL_StatusTypeDef status = HAL_OK;
-  uint32_t regshift = COMP_CSR_COMP1_SHIFT;
-  
-  /* Check the COMP handle allocation and lock status */
-  if((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET))
-  {
-    status = HAL_ERROR;
-  }
-  else
-  {
-    /* Check the parameter */
-    assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
+HAL_StatusTypeDef HAL_COMP_Start(COMP_HandleTypeDef * hcomp)
+{
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t regshift = COMP_CSR_COMP1_SHIFT;
 
-    if(hcomp->State == HAL_COMP_STATE_READY)
-    {
-      /* Enable the selected comparator */
-      if(hcomp->Instance == COMP2)
-      {
-        regshift = COMP_CSR_COMP2_SHIFT;
-      }
-      SET_BIT(COMP->CSR, (uint32_t)COMP_CSR_COMPxEN << regshift);
+	/* Check the COMP handle allocation and lock status */
+	if ((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET)) {
+		status = HAL_ERROR;
+	} else {
+		/* Check the parameter */
+		assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
 
-      hcomp->State = HAL_COMP_STATE_BUSY;      
-    }
-    else
-    {
-      status = HAL_ERROR;
-    }
-  }
+		if (hcomp->State == HAL_COMP_STATE_READY) {
+			/* Enable the selected comparator */
+			if (hcomp->Instance == COMP2) {
+				regshift = COMP_CSR_COMP2_SHIFT;
+			}
+			SET_BIT(COMP->CSR,
+				(uint32_t) COMP_CSR_COMPxEN << regshift);
 
-  return status;
+			hcomp->State = HAL_COMP_STATE_BUSY;
+		} else {
+			status = HAL_ERROR;
+		}
+	}
+
+	return status;
 }
 
 /**
@@ -412,39 +397,33 @@ HAL_StatusTypeDef HAL_COMP_Start(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_COMP_Stop(COMP_HandleTypeDef *hcomp)
-{ 
-  HAL_StatusTypeDef status = HAL_OK;
-  uint32_t regshift = COMP_CSR_COMP1_SHIFT;
-  
-  /* Check the COMP handle allocation and lock status */
-  if((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET))
-  {
-    status = HAL_ERROR;
-  }
-  else
-  {
-    /* Check the parameter */
-    assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
+HAL_StatusTypeDef HAL_COMP_Stop(COMP_HandleTypeDef * hcomp)
+{
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t regshift = COMP_CSR_COMP1_SHIFT;
 
-    if(hcomp->State == HAL_COMP_STATE_BUSY)
-    {
-      /* Disable the selected comparator */
-      if(hcomp->Instance == COMP2)
-      {
-        regshift = COMP_CSR_COMP2_SHIFT;
-      }
-      CLEAR_BIT(COMP->CSR, (uint32_t)COMP_CSR_COMPxEN << regshift);
+	/* Check the COMP handle allocation and lock status */
+	if ((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET)) {
+		status = HAL_ERROR;
+	} else {
+		/* Check the parameter */
+		assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
 
-      hcomp->State = HAL_COMP_STATE_READY;
-    }
-    else
-    {
-      status = HAL_ERROR;
-    }
-  }
-  
-  return status;
+		if (hcomp->State == HAL_COMP_STATE_BUSY) {
+			/* Disable the selected comparator */
+			if (hcomp->Instance == COMP2) {
+				regshift = COMP_CSR_COMP2_SHIFT;
+			}
+			CLEAR_BIT(COMP->CSR,
+				  (uint32_t) COMP_CSR_COMPxEN << regshift);
+
+			hcomp->State = HAL_COMP_STATE_READY;
+		} else {
+			status = HAL_ERROR;
+		}
+	}
+
+	return status;
 }
 
 /**
@@ -452,44 +431,39 @@ HAL_StatusTypeDef HAL_COMP_Stop(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval HAL status.
   */
-HAL_StatusTypeDef HAL_COMP_Start_IT(COMP_HandleTypeDef *hcomp)
-{ 
-  HAL_StatusTypeDef status = HAL_OK;
-  uint32_t extiline = 0;
-  
-  /* Check the parameter */
-  assert_param(IS_COMP_TRIGGERMODE(hcomp->Init.TriggerMode));
+HAL_StatusTypeDef HAL_COMP_Start_IT(COMP_HandleTypeDef * hcomp)
+{
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t extiline = 0;
 
-  status = HAL_COMP_Start(hcomp);
-  if(status == HAL_OK)
-  {
-    /* Check the Exti Line output configuration */
-    extiline = __HAL_COMP_GET_EXTI_LINE(hcomp->Instance);
-    /* Configure the rising edge */
-    if((hcomp->Init.TriggerMode & COMP_TRIGGERMODE_IT_RISING) != RESET)
-    {
-      __HAL_COMP_EXTI_RISING_IT_ENABLE(extiline);
-    }
-    else
-    {
-      __HAL_COMP_EXTI_RISING_IT_DISABLE(extiline);
-    }
-    /* Configure the falling edge */
-    if((hcomp->Init.TriggerMode & COMP_TRIGGERMODE_IT_FALLING) != RESET)
-    {
-      __HAL_COMP_EXTI_FALLING_IT_ENABLE(extiline);
-    }
-    else
-    {
-      __HAL_COMP_EXTI_FALLING_IT_DISABLE(extiline);
-    }
-    /* Enable Exti interrupt mode */
-    __HAL_COMP_EXTI_ENABLE_IT(extiline);
-    /* Clear COMP Exti pending bit */
-    __HAL_COMP_EXTI_CLEAR_FLAG(extiline);    
-  }
+	/* Check the parameter */
+	assert_param(IS_COMP_TRIGGERMODE(hcomp->Init.TriggerMode));
 
-  return status;
+	status = HAL_COMP_Start(hcomp);
+	if (status == HAL_OK) {
+		/* Check the Exti Line output configuration */
+		extiline = __HAL_COMP_GET_EXTI_LINE(hcomp->Instance);
+		/* Configure the rising edge */
+		if ((hcomp->Init.TriggerMode & COMP_TRIGGERMODE_IT_RISING) !=
+		    RESET) {
+			__HAL_COMP_EXTI_RISING_IT_ENABLE(extiline);
+		} else {
+			__HAL_COMP_EXTI_RISING_IT_DISABLE(extiline);
+		}
+		/* Configure the falling edge */
+		if ((hcomp->Init.TriggerMode & COMP_TRIGGERMODE_IT_FALLING) !=
+		    RESET) {
+			__HAL_COMP_EXTI_FALLING_IT_ENABLE(extiline);
+		} else {
+			__HAL_COMP_EXTI_FALLING_IT_DISABLE(extiline);
+		}
+		/* Enable Exti interrupt mode */
+		__HAL_COMP_EXTI_ENABLE_IT(extiline);
+		/* Clear COMP Exti pending bit */
+		__HAL_COMP_EXTI_CLEAR_FLAG(extiline);
+	}
+
+	return status;
 }
 
 /**
@@ -497,16 +471,16 @@ HAL_StatusTypeDef HAL_COMP_Start_IT(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_COMP_Stop_IT(COMP_HandleTypeDef *hcomp)
-{ 
-  HAL_StatusTypeDef status = HAL_OK;
-  
-  /* Disable the Exti Line interrupt mode */
-  __HAL_COMP_EXTI_DISABLE_IT(__HAL_COMP_GET_EXTI_LINE(hcomp->Instance));
-  
-  status = HAL_COMP_Stop(hcomp);
-  
-  return status;
+HAL_StatusTypeDef HAL_COMP_Stop_IT(COMP_HandleTypeDef * hcomp)
+{
+	HAL_StatusTypeDef status = HAL_OK;
+
+	/* Disable the Exti Line interrupt mode */
+	__HAL_COMP_EXTI_DISABLE_IT(__HAL_COMP_GET_EXTI_LINE(hcomp->Instance));
+
+	status = HAL_COMP_Stop(hcomp);
+
+	return status;
 }
 
 /**
@@ -514,19 +488,18 @@ HAL_StatusTypeDef HAL_COMP_Stop_IT(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval HAL status
   */
-void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
+void HAL_COMP_IRQHandler(COMP_HandleTypeDef * hcomp)
 {
-  uint32_t extiline = __HAL_COMP_GET_EXTI_LINE(hcomp->Instance);
-  
-  /* Check COMP Exti flag */
-  if(__HAL_COMP_EXTI_GET_FLAG(extiline) != RESET)
-  {
-    /* Clear COMP Exti pending bit */
-    __HAL_COMP_EXTI_CLEAR_FLAG(extiline);
+	uint32_t extiline = __HAL_COMP_GET_EXTI_LINE(hcomp->Instance);
 
-    /* COMP trigger user callback */
-    HAL_COMP_TriggerCallback(hcomp);    
-  }  
+	/* Check COMP Exti flag */
+	if (__HAL_COMP_EXTI_GET_FLAG(extiline) != RESET) {
+		/* Clear COMP Exti pending bit */
+		__HAL_COMP_EXTI_CLEAR_FLAG(extiline);
+
+		/* COMP trigger user callback */
+		HAL_COMP_TriggerCallback(hcomp);
+	}
 }
 
 /**
@@ -553,33 +526,29 @@ void HAL_COMP_IRQHandler(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_COMP_Lock(COMP_HandleTypeDef *hcomp)
+HAL_StatusTypeDef HAL_COMP_Lock(COMP_HandleTypeDef * hcomp)
 {
-  HAL_StatusTypeDef status = HAL_OK;
-  uint32_t regshift = COMP_CSR_COMP1_SHIFT;
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t regshift = COMP_CSR_COMP1_SHIFT;
 
-  /* Check the COMP handle allocation and lock status */
-  if((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET))
-  {
-    status = HAL_ERROR;
-  }
-  else
-  {
-    /* Check the parameter */
-    assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
+	/* Check the COMP handle allocation and lock status */
+	if ((hcomp == NULL) || ((hcomp->State & COMP_STATE_BIT_LOCK) != RESET)) {
+		status = HAL_ERROR;
+	} else {
+		/* Check the parameter */
+		assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
 
-    /* Set lock flag */
-    hcomp->State |= COMP_STATE_BIT_LOCK;
+		/* Set lock flag */
+		hcomp->State |= COMP_STATE_BIT_LOCK;
 
-    /* Set the lock bit corresponding to selected comparator */
-    if(hcomp->Instance == COMP2)
-    {
-      regshift = COMP_CSR_COMP2_SHIFT;
-    }
-    SET_BIT(COMP->CSR, (uint32_t)COMP_CSR_COMPxLOCK << regshift);
-  }
-  
-  return status; 
+		/* Set the lock bit corresponding to selected comparator */
+		if (hcomp->Instance == COMP2) {
+			regshift = COMP_CSR_COMP2_SHIFT;
+		}
+		SET_BIT(COMP->CSR, (uint32_t) COMP_CSR_COMPxLOCK << regshift);
+	}
+
+	return status;
 }
 
 /**
@@ -599,25 +568,23 @@ HAL_StatusTypeDef HAL_COMP_Lock(COMP_HandleTypeDef *hcomp)
   * @retval Returns the selected comparator output level: COMP_OUTPUTLEVEL_LOW or COMP_OUTPUTLEVEL_HIGH.
   *       
   */
-uint32_t HAL_COMP_GetOutputLevel(COMP_HandleTypeDef *hcomp)
+uint32_t HAL_COMP_GetOutputLevel(COMP_HandleTypeDef * hcomp)
 {
-  uint32_t level=0;
-  uint32_t regshift = COMP_CSR_COMP1_SHIFT;
-  
-  /* Check the parameter */
-  assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
-  
-  if(hcomp->Instance == COMP2)
-  {
-    regshift = COMP_CSR_COMP2_SHIFT;
-  }
-  level = READ_BIT(COMP->CSR, (uint32_t)COMP_CSR_COMPxOUT << regshift);
-  
-  if(level != 0)
-  {
-    return(COMP_OUTPUTLEVEL_HIGH);
-  }
-  return(COMP_OUTPUTLEVEL_LOW);
+	uint32_t level = 0;
+	uint32_t regshift = COMP_CSR_COMP1_SHIFT;
+
+	/* Check the parameter */
+	assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
+
+	if (hcomp->Instance == COMP2) {
+		regshift = COMP_CSR_COMP2_SHIFT;
+	}
+	level = READ_BIT(COMP->CSR, (uint32_t) COMP_CSR_COMPxOUT << regshift);
+
+	if (level != 0) {
+		return (COMP_OUTPUTLEVEL_HIGH);
+	}
+	return (COMP_OUTPUTLEVEL_LOW);
 }
 
 /**
@@ -625,13 +592,12 @@ uint32_t HAL_COMP_GetOutputLevel(COMP_HandleTypeDef *hcomp)
   * @param  hcomp: COMP handle
   * @retval None
   */
-__weak void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
+__weak void HAL_COMP_TriggerCallback(COMP_HandleTypeDef * hcomp)
 {
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_COMP_TriggerCallback should be implemented in the user file
-   */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	   the HAL_COMP_TriggerCallback should be implemented in the user file
+	 */
 }
-
 
 /**
   * @}
@@ -657,19 +623,19 @@ __weak void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
   * @param  hcomp : COMP handle
   * @retval HAL state
   */
-uint32_t HAL_COMP_GetState(COMP_HandleTypeDef *hcomp)
+uint32_t HAL_COMP_GetState(COMP_HandleTypeDef * hcomp)
 {
-  /* Check the COMP handle allocation */
-  if(hcomp == NULL)
-  {
-    return HAL_COMP_STATE_RESET;
-  }
+	/* Check the COMP handle allocation */
+	if (hcomp == NULL) {
+		return HAL_COMP_STATE_RESET;
+	}
 
-  /* Check the parameter */
-  assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
+	/* Check the parameter */
+	assert_param(IS_COMP_ALL_INSTANCE(hcomp->Instance));
 
-  return hcomp->State;
+	return hcomp->State;
 }
+
 /**
   * @}
   */

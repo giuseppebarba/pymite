@@ -96,35 +96,33 @@
   * @{
   */
 
-
 /**
   * @brief  Extended initialization to set generating polynomial
   * @param  hcrc: CRC handle             
   * @retval HAL status
-  */             
-HAL_StatusTypeDef HAL_CRCEx_Init(CRC_HandleTypeDef *hcrc)
+  */
+HAL_StatusTypeDef HAL_CRCEx_Init(CRC_HandleTypeDef * hcrc)
 {
 #if defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined (STM32F098xx)
-  /* check whether or not non-default generating polynomial has been 
-   * picked up by user */
-  assert_param(IS_DEFAULT_POLYNOMIAL(hcrc->Init.DefaultPolynomialUse)); 
-  if (hcrc->Init.DefaultPolynomialUse == DEFAULT_POLYNOMIAL_ENABLE)
-  {
-    /* initialize IP with default generating polynomial */
-    WRITE_REG(hcrc->Instance->POL, DEFAULT_CRC32_POLY);  
-    MODIFY_REG(hcrc->Instance->CR, CRC_CR_POLYSIZE, CRC_POLYLENGTH_32B);
-  }
-  else
-  {
-    /* initialize CRC IP with generating polynomial defined by user */
-    if (HAL_CRCEx_Polynomial_Set(hcrc, hcrc->Init.GeneratingPolynomial, hcrc->Init.CRCLength) != HAL_OK)
-    {
-      return HAL_ERROR;
-    }
-  }
-#endif /* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined (STM32F098xx) */    
+	/* check whether or not non-default generating polynomial has been 
+	 * picked up by user */
+	assert_param(IS_DEFAULT_POLYNOMIAL(hcrc->Init.DefaultPolynomialUse));
+	if (hcrc->Init.DefaultPolynomialUse == DEFAULT_POLYNOMIAL_ENABLE) {
+		/* initialize IP with default generating polynomial */
+		WRITE_REG(hcrc->Instance->POL, DEFAULT_CRC32_POLY);
+		MODIFY_REG(hcrc->Instance->CR, CRC_CR_POLYSIZE,
+			   CRC_POLYLENGTH_32B);
+	} else {
+		/* initialize CRC IP with generating polynomial defined by user */
+		if (HAL_CRCEx_Polynomial_Set
+		    (hcrc, hcrc->Init.GeneratingPolynomial,
+		     hcrc->Init.CRCLength) != HAL_OK) {
+			return HAL_ERROR;
+		}
+	}
+#endif /* defined(STM32F071xB) || defined(STM32F072xB) || defined(STM32F078xx) || defined(STM32F091xC) || defined (STM32F098xx) */
 
-   return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -137,22 +135,23 @@ HAL_StatusTypeDef HAL_CRCEx_Init(CRC_HandleTypeDef *hcrc)
   *          @arg CRC_INPUTDATA_INVERSION_HALFWORD: HalfWord-wise bit reversal
   *          @arg CRC_INPUTDATA_INVERSION_WORD: Word-wise bit reversal              
   * @retval HAL status
-  */                                   
-HAL_StatusTypeDef HAL_CRCEx_Input_Data_Reverse(CRC_HandleTypeDef *hcrc, uint32_t InputReverseMode)
-{  
-  /* Check the parameters */
-  assert_param(IS_CRC_INPUTDATA_INVERSION_MODE(InputReverseMode));
-  
-  /* Change CRC peripheral state */
-  hcrc->State = HAL_CRC_STATE_BUSY;
+  */
+HAL_StatusTypeDef HAL_CRCEx_Input_Data_Reverse(CRC_HandleTypeDef * hcrc,
+					       uint32_t InputReverseMode)
+{
+	/* Check the parameters */
+	assert_param(IS_CRC_INPUTDATA_INVERSION_MODE(InputReverseMode));
 
-  /* set input data inversion mode */
-  MODIFY_REG(hcrc->Instance->CR, CRC_CR_REV_IN, InputReverseMode);    
-  /* Change CRC peripheral state */
-  hcrc->State = HAL_CRC_STATE_READY;
-  
-  /* Return function status */
-  return HAL_OK;
+	/* Change CRC peripheral state */
+	hcrc->State = HAL_CRC_STATE_BUSY;
+
+	/* set input data inversion mode */
+	MODIFY_REG(hcrc->Instance->CR, CRC_CR_REV_IN, InputReverseMode);
+	/* Change CRC peripheral state */
+	hcrc->State = HAL_CRC_STATE_READY;
+
+	/* Return function status */
+	return HAL_OK;
 }
 
 /**
@@ -163,23 +162,24 @@ HAL_StatusTypeDef HAL_CRCEx_Input_Data_Reverse(CRC_HandleTypeDef *hcrc, uint32_t
   *          @arg CRC_OUTPUTDATA_INVERSION_DISABLED: no CRC inversion (default value)
   *          @arg CRC_OUTPUTDATA_INVERSION_ENABLED: bit-level inversion (e.g for a 8-bit CRC: 0xB5 becomes 0xAD)            
   * @retval HAL status
-  */                                   
-HAL_StatusTypeDef HAL_CRCEx_Output_Data_Reverse(CRC_HandleTypeDef *hcrc, uint32_t OutputReverseMode)
+  */
+HAL_StatusTypeDef HAL_CRCEx_Output_Data_Reverse(CRC_HandleTypeDef * hcrc,
+						uint32_t OutputReverseMode)
 {
-  /* Check the parameters */
-  assert_param(IS_CRC_OUTPUTDATA_INVERSION_MODE(OutputReverseMode));
-  
-  /* Change CRC peripheral state */
-  hcrc->State = HAL_CRC_STATE_BUSY;
+	/* Check the parameters */
+	assert_param(IS_CRC_OUTPUTDATA_INVERSION_MODE(OutputReverseMode));
 
-  /* set output data inversion mode */
-  MODIFY_REG(hcrc->Instance->CR, CRC_CR_REV_OUT, OutputReverseMode); 
-      
-  /* Change CRC peripheral state */
-  hcrc->State = HAL_CRC_STATE_READY;
-  
-  /* Return function status */
-  return HAL_OK;
+	/* Change CRC peripheral state */
+	hcrc->State = HAL_CRC_STATE_BUSY;
+
+	/* set output data inversion mode */
+	MODIFY_REG(hcrc->Instance->CR, CRC_CR_REV_OUT, OutputReverseMode);
+
+	/* Change CRC peripheral state */
+	hcrc->State = HAL_CRC_STATE_READY;
+
+	/* Return function status */
+	return HAL_OK;
 }
 
 #if defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || defined (STM32F091xC) || defined (STM32F098xx)
@@ -197,59 +197,56 @@ HAL_StatusTypeDef HAL_CRCEx_Output_Data_Reverse(CRC_HandleTypeDef *hcrc, uint32_
   *          @arg CRC_POLYLENGTH_16B: 16-bit long CRC (generating polynomial of degree 16)
   *          @arg CRC_POLYLENGTH_32B: 32-bit long CRC (generating polynomial of degree 32)                
   * @retval HAL status
-  */                                   
-HAL_StatusTypeDef HAL_CRCEx_Polynomial_Set(CRC_HandleTypeDef *hcrc, uint32_t Pol, uint32_t PolyLength)
+  */
+HAL_StatusTypeDef HAL_CRCEx_Polynomial_Set(CRC_HandleTypeDef * hcrc,
+					   uint32_t Pol, uint32_t PolyLength)
 {
-  uint32_t msb = 31; /* polynomial degree is 32 at most, so msb is initialized to max value */
+	uint32_t msb = 31;	/* polynomial degree is 32 at most, so msb is initialized to max value */
 
-  /* Check the parameters */
-  assert_param(IS_CRC_POL_LENGTH(PolyLength));
-  
-  /* check polynomial definition vs polynomial size:
-   * polynomial length must be aligned with polynomial
-   * definition. HAL_ERROR is reported if Pol degree is 
-   * larger than that indicated by PolyLength.
-   * Look for MSB position: msb will contain the degree of
-   *  the second to the largest polynomial member. E.g., for
-   *  X^7 + X^6 + X^5 + X^2 + 1, msb = 6. */
-  while (((Pol & (1U << msb)) == 0) && (msb-- > 0))
-  {}
+	/* Check the parameters */
+	assert_param(IS_CRC_POL_LENGTH(PolyLength));
 
-  switch (PolyLength)
-  {
-    case CRC_POLYLENGTH_7B:
-      if (msb >= HAL_CRC_LENGTH_7B)
-      {
-        return  HAL_ERROR;
-      }
-      break;
-    case CRC_POLYLENGTH_8B:
-      if (msb >= HAL_CRC_LENGTH_8B)
-      { 
-        return  HAL_ERROR;
-      }
-      break;
-    case CRC_POLYLENGTH_16B:
-      if (msb >= HAL_CRC_LENGTH_16B)
-      {
-        return  HAL_ERROR;
-      }
-      break;
-    case CRC_POLYLENGTH_32B:
-      /* no polynomial definition vs. polynomial length issue possible */
-      break;      
-    default:
-      break;
-  }
+	/* check polynomial definition vs polynomial size:
+	 * polynomial length must be aligned with polynomial
+	 * definition. HAL_ERROR is reported if Pol degree is 
+	 * larger than that indicated by PolyLength.
+	 * Look for MSB position: msb will contain the degree of
+	 *  the second to the largest polynomial member. E.g., for
+	 *  X^7 + X^6 + X^5 + X^2 + 1, msb = 6. */
+	while (((Pol & (1U << msb)) == 0) && (msb-- > 0)) {
+	}
 
-  /* set generating polynomial */
-  WRITE_REG(hcrc->Instance->POL, Pol);
-  
-  /* set generating polynomial size */
-  MODIFY_REG(hcrc->Instance->CR, CRC_CR_POLYSIZE, PolyLength);  
-  
-  /* Return function status */
-  return HAL_OK;
+	switch (PolyLength) {
+	case CRC_POLYLENGTH_7B:
+		if (msb >= HAL_CRC_LENGTH_7B) {
+			return HAL_ERROR;
+		}
+		break;
+	case CRC_POLYLENGTH_8B:
+		if (msb >= HAL_CRC_LENGTH_8B) {
+			return HAL_ERROR;
+		}
+		break;
+	case CRC_POLYLENGTH_16B:
+		if (msb >= HAL_CRC_LENGTH_16B) {
+			return HAL_ERROR;
+		}
+		break;
+	case CRC_POLYLENGTH_32B:
+		/* no polynomial definition vs. polynomial length issue possible */
+		break;
+	default:
+		break;
+	}
+
+	/* set generating polynomial */
+	WRITE_REG(hcrc->Instance->POL, Pol);
+
+	/* set generating polynomial size */
+	MODIFY_REG(hcrc->Instance->CR, CRC_CR_POLYSIZE, PolyLength);
+
+	/* Return function status */
+	return HAL_OK;
 }
 #endif /* #if defined (STM32F071xB) || defined (STM32F072xB) || defined (STM32F078xx) || defined (STM32F091xC) || defined (STM32F098xx) */
 
@@ -257,11 +254,9 @@ HAL_StatusTypeDef HAL_CRCEx_Polynomial_Set(CRC_HandleTypeDef *hcrc, uint32_t Pol
   * @}
   */
 
-
 /**
   * @}
   */
-
 
 #endif /* HAL_CRC_MODULE_ENABLED */
 /**

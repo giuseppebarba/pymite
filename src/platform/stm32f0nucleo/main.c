@@ -19,19 +19,18 @@
 
 extern unsigned char usrlib_img[];
 
-int
-main(void)
+int main(void)
 {
-    uint8_t heap[HEAP_SIZE];
-    PmReturn_t retval;
+	uint8_t heap[HEAP_SIZE];
+	PmReturn_t retval;
 
-    plat_init();
+	plat_init();
 
-    retval = pm_init(heap, HEAP_SIZE, MEMSPACE_PROG, usrlib_img);
-    PM_RETURN_IF_ERROR(retval);
+	retval = pm_init(heap, HEAP_SIZE, MEMSPACE_PROG, usrlib_img);
+	PM_RETURN_IF_ERROR(retval);
 
-    /* Run the sample program */
-    retval = pm_run((uint8_t *)"main");
+	/* Run the sample program */
+	retval = pm_run((uint8_t *) "main");
 
-    return (int)retval;
+	return (int)retval;
 }
