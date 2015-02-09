@@ -19,7 +19,7 @@
 
 #include "hal_types.h"
 #include "link_layer.h"
-#include "list.h"
+#include "st-list.h"
 
 #define HCI_PACKET_SIZE				        128	//71
 

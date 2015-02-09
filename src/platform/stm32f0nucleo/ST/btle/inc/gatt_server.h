@@ -157,7 +157,7 @@
  */
 #define MAX_ENCRY_KEY_SIZE                (0x10)
 
-typedef __packed struct _charactFormat {
+typedef struct _charactFormat {
 	uint8_t format;
 	int8_t exp;
 	uint16_t unit;

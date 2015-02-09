@@ -19,7 +19,7 @@
 #define PACKED
 #else
 #ifdef __GNUC__
-#define __packed
+#include <sys/cdefs.h>
 #define PACKED __attribute__((packed))
 #else
 #define PACKED

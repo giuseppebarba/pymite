@@ -3,6 +3,7 @@
 
 #include "stm32f0xx_hal.h"
 #include "stm32f0xx_nucleo.h"
+#include "ble_status.h"
 #include "pm.h"
 
 #define PM_FLOAT_LITTLE_ENDIAN

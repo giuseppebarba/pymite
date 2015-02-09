@@ -79,7 +79,7 @@ tBleStatus aci_l2cap_connection_parameter_update_response(uint16_t conn_handle,
  * For more info see CONNECTION PARAMETER UPDATE RESPONSE in Bluetooth Core v4.0 spec.
  */
 #define EVT_BLUE_L2CAP_CONN_UPD_RESP		  (0x0800)
-typedef __packed struct _evt_l2cap_conn_upd_resp {
+typedef struct _evt_l2cap_conn_upd_resp {
 	uint16_t conn_handle;
 	uint8_t resp_len;
 	uint8_t code;
@@ -100,7 +100,7 @@ typedef __packed struct _evt_l2cap_conn_upd_resp {
  * The application has to respond by calling aci_l2cap_connection_parameter_update_response().
  */
 #define EVT_BLUE_L2CAP_CONN_UPD_REQ		  	  (0x0802)
-typedef __packed struct _evt_l2cap_conn_upd_req {
+typedef struct _evt_l2cap_conn_upd_req {
 	uint16_t conn_handle;
 	uint8_t resp_len;
 	uint8_t code;

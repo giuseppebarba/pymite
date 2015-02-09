@@ -16,6 +16,14 @@
 #include "pm.h"
 #include "plat.h"
 #include "stm32_bluenrg_ble.h"
+#include "bluenrg_hal_aci.h"
+#include "gap.h"
+#include "sm.h"
+#include "hci.h"
+#include "osal.h"
+#include "bluenrg_gatt_aci.h"
+#include "bluenrg_gap_aci.h"
+#include "sample_service.h"
 
 UART_HandleTypeDef UartHandle;
 __IO ITStatus UartReady = RESET;
@@ -64,7 +72,7 @@ int fputc(int ch, FILE * f)
   * @param  None
   * @retval None
   */
-static void SystemClock_Config(void)
+void SystemClock_Config(void)
 {
 	RCC_ClkInitTypeDef RCC_ClkInitStruct;
 	RCC_OscInitTypeDef RCC_OscInitStruct;
@@ -94,6 +102,8 @@ PmReturn_t plat_init(void)
 	uint8_t CLIENT_BDADDR[] = { 0xbb, 0x00, 0x00, 0xE1, 0x80, 0x02 };
 	uint8_t SERVER_BDADDR[] = { 0xaa, 0x00, 0x00, 0xE1, 0x80, 0x02 };
 	uint8_t bdaddr[BDADDR_SIZE];
+	uint16_t service_handle, dev_name_char_handle, appearance_char_handle;
+	int ret;
 
 	/* STM32F0xx HAL library initialization:
 	   - Configure the Flash prefetch
@@ -177,7 +187,7 @@ PmReturn_t plat_init(void)
 	   - BaudRate = 9600 baud
 	   - Hardware flow control disabled (RTS and CTS signals) */
 	UartHandle.Instance = USARTx;
-	UartHandle.Init.BaudRate = 9600;
+	UartHandle.Init.BaudRate = UART_BAUD;
 	UartHandle.Init.WordLength = UART_WORDLENGTH_8B;
 	UartHandle.Init.StopBits = UART_STOPBITS_1;
 	UartHandle.Init.Parity = UART_PARITY_NONE;
@@ -241,7 +251,7 @@ PmReturn_t plat_getByte(uint8_t * b)
 
 PmReturn_t plat_putByte(uint8_t b)
 {
-	if (HAL_UART_Transmit_IT(&UartHandle, (uint8_t *) b, 1) != HAL_OK)
+	if (HAL_UART_Transmit_IT(&UartHandle, &b, 1) != HAL_OK)
 		Error_Handler();
 
 	return PM_RET_OK;

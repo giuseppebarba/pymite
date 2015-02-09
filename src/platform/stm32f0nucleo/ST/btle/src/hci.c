@@ -22,7 +22,7 @@
 #include "hal.h"
 #include "hci_const.h"
 #include "gp_timer.h"
-
+#include "bluenrg_interface.h"
 #include "stm32_bluenrg_ble.h"
 
 extern SPI_HandleTypeDef SpiHandle;

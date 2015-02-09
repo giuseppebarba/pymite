@@ -248,6 +248,7 @@ int32_t BlueNRG_SPI_Read_All(SPI_HandleTypeDef * hspi, uint8_t * buffer,
 	uint8_t len = 0;
 	uint8_t char_ff = 0xff;
 	volatile uint8_t read_char;
+	volatile int i;
 
 	uint8_t header_master[HEADER_SIZE] = { 0x0b, 0x00, 0x00, 0x00, 0x00 };
 	uint8_t header_slave[HEADER_SIZE];
@@ -283,7 +284,7 @@ int32_t BlueNRG_SPI_Read_All(SPI_HandleTypeDef * hspi, uint8_t * buffer,
 
 	// Add a small delay to give time to the BlueNRG to set the IRQ pin low
 	// to avoid a useless SPI read at the end of the transaction
-	for (volatile int i = 0; i < 2; i++)
+	for (i = 0; i < 2; i++)
 		__NOP();
 
 #ifdef PRINT_CSV_FORMAT
@@ -434,14 +435,19 @@ void set_irq_as_input()
   */
 static void us150Delay()
 {
+    volatile int i;
 #if SYSCLK_FREQ == 4000000
-	for (volatile int i = 0; i < 35; i++)
+	for (i = 0; i < 35; i++)
 		__NOP();
 #elif SYSCLK_FREQ == 32000000
-	for (volatile int i = 0; i < 420; i++)
+	for (i = 0; i < 420; i++)
 		__NOP();
+#elif SYSCLK_FREQ == 48000000
+	for (i = 0; i < 600; i++)
+		__NOP();
+//TODO "check the clock"
 #elif SYSCLK_FREQ == 84000000
-	for (volatile int i = 0; i < 1125; i++)
+	for (i = 0; i < 1125; i++)
 		__NOP();
 #else
 #error Implement delay function.

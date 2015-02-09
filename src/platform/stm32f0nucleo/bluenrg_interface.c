@@ -43,6 +43,7 @@
 #include "hci.h"
 #include "stm32_bluenrg_ble.h"
 #include "cube_hal.h"
+#include "st-list.h"
 
 extern SPI_HandleTypeDef SpiHandle;
 

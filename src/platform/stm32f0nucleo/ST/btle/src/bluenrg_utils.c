@@ -7,7 +7,7 @@
 #include "hci.h"
 #include "osal.h"
 #include "string.h"
-//#include "SDK_EVAL_Spi_Driver.h"
+#include "stm32_bluenrg_ble.h"
 
 #define SUPPORTED_BOOTLOADER_VERSION_MIN  3
 #define SUPPORTED_BOOTLOADER_VERSION_MAX  5

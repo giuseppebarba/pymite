@@ -175,9 +175,11 @@ void Make_Connection(void)
  */
 void receiveData(uint8_t * data_buffer, uint8_t Nb_bytes)
 {
+	int i;
+
 	BSP_LED_Toggle(LED2);
 
-	for (int i = 0; i < Nb_bytes; i++) {
+	for (i = 0; i < Nb_bytes; i++) {
 		PRINTF("%c", data_buffer[i]);
 	}
 }
@@ -248,11 +250,13 @@ void Attribute_Modified_CB(uint16_t handle, uint8_t data_length,
  */
 void GAP_ConnectionComplete_CB(uint8_t addr[6], uint16_t handle)
 {
+	int i;
+
 	connected = TRUE;
 	connection_handle = handle;
 
 	PRINTF("Connected to device:");
-	for (int i = 5; i > 0; i--) {
+	for (i = 5; i > 0; i--) {
 		PRINTF("%02X-", addr[i]);
 	}
 	PRINTF("%02X\n", addr[0]);

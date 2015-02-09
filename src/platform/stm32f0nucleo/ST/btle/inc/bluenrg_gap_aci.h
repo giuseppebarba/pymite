@@ -691,7 +691,7 @@ tBleStatus aci_gap_send_pairing_request(uint16_t conn_handle,
  *  so that the upper layer can decide to disconnect the link. See @ref evt_gap_pairing_cmplt.
  */
 #define EVT_BLUE_GAP_PAIRING_CMPLT                (0x0401)
-typedef __packed struct _evt_gap_pairing_cmplt {
+typedef struct _evt_gap_pairing_cmplt {
 	uint16_t conn_handle;
 			/**< Connection handle on which the pairing procedure completed */
   /**
@@ -707,7 +707,7 @@ typedef __packed struct _evt_gap_pairing_cmplt {
  * When this event is received, the application has to respond with the aci_gap_pass_key_response() command.
  */
 #define EVT_BLUE_GAP_PASS_KEY_REQUEST             (0x0402)
-typedef __packed struct _evt_gap_pass_key_req {
+typedef struct _evt_gap_pass_key_req {
 	uint16_t conn_handle;
 			/**< Connection handle for which the passkey has been requested. */
 } PACKED evt_gap_pass_key_req;
@@ -719,7 +719,7 @@ typedef __packed struct _evt_gap_pass_key_req {
  * aci_gap_authorization_response() command should be used by the application.
  */
 #define EVT_BLUE_GAP_AUTHORIZATION_REQUEST        (0x0403)
-typedef __packed struct _evt_gap_author_req {
+typedef struct _evt_gap_author_req {
 	uint16_t conn_handle;
 			/**< Connection handle for which authorization has been requested. */
 } PACKED evt_gap_author_req;
@@ -743,14 +743,14 @@ typedef __packed struct _evt_gap_author_req {
  */
 #define EVT_BLUE_GAP_DEVICE_FOUND                 (0x0406)
 #ifndef BLUENRG_FW_6_4
-typedef __packed struct _evt_gap_device_found {
+typedef struct _evt_gap_device_found {
 	uint8_t peer_address_type;
 			     /**< Type of the peer address (@ref PUBLIC_ADDR, @ref RANDOM_ADDR). */
 	uint8_t peer_address[6];
 			     /**< Address of the peer device found during scanning. */
 } PACKED evt_gap_device_found;
 #else
-typedef __packed struct _evt_gap_device_found {
+typedef struct _evt_gap_device_found {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 	uint8_t evt_type;
 	uint8_t bdaddr_type;	      /**< Type of the peer address (@ref PUBLIC_ADDR, @ref RANDOM_ADDR). */
@@ -766,7 +766,7 @@ typedef __packed struct _evt_gap_device_found {
  * by the upper layer or has completed for any other reason. See @ref evt_gap_procedure_complete.
  */
 #define EVT_BLUE_GAP_PROCEDURE_COMPLETE           (0x0407)
-typedef __packed struct _evt_gap_procedure_complete {
+typedef struct _evt_gap_procedure_complete {
 	uint8_t procedure_code;
 			  /**< Terminated procedure. See @ref gap_procedure_codes. */
   /**
@@ -792,7 +792,7 @@ typedef __packed struct _evt_gap_procedure_complete {
  * as its own address as well as the peer address to which it wants to connect.
  */
 #define EVT_BLUE_GAP_RECONNECTION_ADDRESS           (0x0408)
-typedef __packed struct _evt_gap_reconnection_addr {
+typedef struct _evt_gap_reconnection_addr {
 	uint8_t reconnection_address[6];
 } PACKED evt_gap_reconnection_addr;
 
