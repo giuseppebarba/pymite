@@ -203,4 +203,5 @@ rm ./src/platform/stm32f0nucleo/ST/btle/src/gp_timer.o
 rm ./src/platform/stm32f0nucleo/clock.o
 rm src/platform/stm32f0nucleo/main.bin
 rm src/platform/stm32f0nucleo/main.elf
+rm ./src/platform/stm32f0nucleo/bluenrg_UART.o
 
