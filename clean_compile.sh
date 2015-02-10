@@ -145,7 +145,6 @@ rm ./src/platform/stm32f0nucleo/stm32f0xx_nucleo.o
 rm src/platform/stm32f0nucleo/main_img.c
 rm src/platform/stm32f0nucleo/main_nat.c
 rm src/vm/libpmvm_stm32f0nucleo.a
-rm ./src/platform/stm32f0nucleo/sample_service.o
 rm ./src/platform/stm32f0nucleo/bluenrg_interface.o
 rm ./src/platform/stm32f0nucleo/ST/hal/src/stm32f0xx_hal_rtc_ex.o
 rm ./src/platform/stm32f0nucleo/ST/hal/src/stm32f0xx_hal_uart.o

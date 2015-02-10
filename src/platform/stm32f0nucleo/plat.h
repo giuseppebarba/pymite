@@ -3,7 +3,6 @@
 
 #include "stm32f0xx_hal.h"
 #include "stm32f0xx_nucleo.h"
-#include "ble_status.h"
 #include "pm.h"
 
 #define PM_FLOAT_LITTLE_ENDIAN
@@ -35,16 +34,6 @@
 #define RXBUFFERSIZE                      TXBUFFERSIZE
 
 #define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
-
-/**
-* @brief BlueNRG Role.
-*/
-typedef enum {
-	CLIENT = 0,
-	      /**< CLIENT is for Central role. */
-	SERVER = 1
-	      /**< SERVER is for Peripheral role. */
-} BLE_RoleTypeDef;
 
 PmReturn_t plat_init(void);
 
