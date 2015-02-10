@@ -204,4 +204,4 @@ rm ./src/platform/stm32f0nucleo/clock.o
 rm src/platform/stm32f0nucleo/main.bin
 rm src/platform/stm32f0nucleo/main.elf
 rm ./src/platform/stm32f0nucleo/bluenrg_UART.o
-
+rm src/platform/stm32f0nucleo/pmfeatures.h
