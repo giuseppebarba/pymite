@@ -16,7 +16,7 @@
 #include "plat.h"
 #include "stm32f0xx.h"
 
-#define HEAP_SIZE 0x7000
+#define HEAP_SIZE 0x4000
 
 extern unsigned char usrlib_img[];
 
