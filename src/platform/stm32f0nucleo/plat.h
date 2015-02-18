@@ -3,7 +3,6 @@
 
 #include "stm32f0xx_hal.h"
 #include "stm32f0xx_nucleo.h"
-#include "pm.h"
 
 #define PM_FLOAT_LITTLE_ENDIAN
 #define PM_PLAT_POINTER_SIZE 4
@@ -34,7 +33,5 @@
 #define RXBUFFERSIZE                      TXBUFFERSIZE
 
 #define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
-
-PmReturn_t plat_init(void);
 
 #endif /* _PLAT_H_ */
