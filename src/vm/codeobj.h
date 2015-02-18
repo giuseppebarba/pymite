@@ -32,7 +32,7 @@
 #  define CI_FIRST_LINE_NO  8
 #  define CI_NAMES_FIELD    10
 # else
-#  define CI_NAMES_FIELD    8
+#  define CI_NAMES_FIELD    10
 # endif /* HAVE_DEBUG_INFO */
 #else
 # ifdef HAVE_DEBUG_INFO
