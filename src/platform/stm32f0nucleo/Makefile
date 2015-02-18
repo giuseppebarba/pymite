@@ -44,6 +44,7 @@ SRC_HAL = \
 	$(SRC_HAL_PATH)/stm32f0xx_hal_gpio.c \
 	$(SRC_HAL_PATH)/stm32f0xx_hal_pwr.c \
 	$(SRC_HAL_PATH)/stm32f0xx_hal_rcc.c \
+	$(SRC_HAL_PATH)/stm32f0xx_hal_rcc_ex.c \
 	$(SRC_HAL_PATH)/stm32f0xx_hal_rtc_ex.c \
 	$(SRC_HAL_PATH)/stm32f0xx_hal_spi.c \
 	$(SRC_HAL_PATH)/stm32f0xx_hal_tim.c \
@@ -142,10 +143,10 @@ ASFLAGS = $(ADEFS) -Wa,-adhlns=$(<:.S=.lst),--g$(DEBUG_FMT)
 #  -Wl,...:     tell GCC to pass this to linker.
 #    -Map:      create map file
 #    --cref:    add cross reference to  map file
-PMLDFLAGS = -nostartfiles -Wl,-Map=$(TARGET).map
+PMLDFLAGS =  -Wl,-Map=$(TARGET).map
 #PMLDFLAGS += -Wl,-verbose
-PMLDFLAGS +=  -lc -lm -mthumb
-PMLDFLAGS += -lgcc -u _start -Wl,-e,Reset_Handler -Wl,-static -Wl,--gc-sections
+PMLDFLAGS +=  -lc -lm -mthumb -lgcc
+PMLDFLAGS += -u _start -Wl,-e,Reset_Handler -Wl,-static -Wl,--gc-sections
 PMLDFLAGS += $(patsubst %,-L%,$(LIBDIRS))
 PMLDFLAGS += $(patsubst %,-l%,$(LIBS))
 PMLDFLAGS +=-Wl,-T -Xlinker $(LINKERSCRIPT)
@@ -176,6 +177,8 @@ LST = $(ASRC:.S=.lst) $(ASRC_HAL:.S=.lst) $(SRC:.c=.lst) $(SRC_HAL:.c=.lst)
 # Add target processor to flags.
 ALL_CFLAGS  = -mcpu=$(MCU) $(THUMB) -I. $(PMCFLAGS)
 ALL_ASFLAGS = -mcpu=$(MCU) $(THUMB) -I. -x assembler-with-cpp $(ASFLAGS)
+
+export CFLAGS IPM PM_LIB_FN
 
 # Default target.
 all: pmfeatures.h pmvm build
