@@ -23,10 +23,10 @@ PM_FEATURES = {
     "HAVE_GENERATORS": True,
     "HAVE_BACKTICK": True,
     "HAVE_STRING_FORMAT": True,
-    "HAVE_CLOSURES": False,
-    "HAVE_BYTEARRAY": False,
+    "HAVE_CLOSURES": True,
+    "HAVE_BYTEARRAY": True,
     "HAVE_DEBUG_INFO": False,
     "HAVE_SNPRINTF_FORMAT": False,
-    "HAVE_AUTOBOX": False,
+    "HAVE_AUTOBOX": True,
     "HAVE_SLICE": True,
 }
