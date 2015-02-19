@@ -3,7 +3,7 @@ PLATFORM := $(notdir $(CURDIR))
 PM_LIB_ROOT = pmvm_$(PLATFORM)
 PM_LIB_FN = lib$(PM_LIB_ROOT).a
 PM_LIB_PATH = ../../vm/$(PM_LIB_FN)
-PM_USR_SOURCES = main.py
+PM_USR_SOURCES = main.py ../../lib/stm.py
 PMIMGCREATOR := ../../tools/pmImgCreator.py
 PMGENPMFEATURES := ../../tools/pmGenPmFeatures.py
 TARGET = main
@@ -22,7 +22,7 @@ TOOL_CHAIN = arm-none-eabi-
 TCHAIN = $(EXT_TOOL_PATH)/$(TOOL_CHAIN)
 
 # If you want to be able to run ipm, uncomment the following line
-IPM = true
+#IPM = true
 
 
 SRC = 	$(TARGET).c plat.c \

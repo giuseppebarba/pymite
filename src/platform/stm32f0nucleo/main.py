@@ -1,11 +1,10 @@
-#
-# PyMite - A flyweight Python interpreter for 8-bit and larger microcontrollers.
-# Copyright 2002 Dean Hall.  All rights reserved.
-# PyMite is offered through one of two licenses: commercial or open-source.
-# See the LICENSE file at the root of this package for licensing details.
-#
+import stm
 
-import ipm
-ipm.ipm()
+while 1:
+    stm.setLED(2)
+    stm.delay(250)
+    stm.resetLED(2)
+    stm.delay(250)
+
 
 # :mode=c:
